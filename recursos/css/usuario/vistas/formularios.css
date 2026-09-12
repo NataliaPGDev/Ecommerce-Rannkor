@@ -1,0 +1,114 @@
+/* ==========================
+   VISTA LOGIN
+========================== */
+
+section .login__contenedor {
+    max-width: 70%;
+    margin: 5rem auto; /* 50px ≈ 5rem */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem; /* 30px ≈ 3rem */
+    background-color: var(--beig);
+    padding: 2rem;
+    border-radius: 1rem;
+}
+
+section .login__formulario {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem; /* 20px ≈ 2rem */
+}
+
+section .login__formulario input {
+    width: 80%;
+    padding: 0.8rem 1.2rem; /* 8px 12px ≈ 0.8rem 1.2rem */
+    border: 0.1rem solid var(--gris);
+    height: 4rem; /* 40px ≈ 4rem */
+    border-radius: 0.5rem;
+    font-size: 1.6rem;
+}
+
+section .login__formulario input:focus {
+    outline: none;
+    box-shadow: 0 0 0.5rem 0.2rem rgba(0, 0, 0, 0.1);
+}
+
+section .login__enlace--olvido {
+    padding-bottom: 1rem; /* 10px ≈ 1rem */
+    color: var(--oscuro);
+    font-size: 1.4rem;
+}
+
+section .login__formulario button {
+    width: 80%;
+    padding: 1rem 0; /* 10px ≈ 1rem */
+    border: none;
+    border-radius: 0.4rem;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.6rem;
+    background-color: var(--oscuro);
+    color: var(--blanco);
+    transition: background-color 0.3s ease;
+}
+
+section .login__formulario button:hover {
+    background-color: var(--gris);
+}
+
+/* ==========================
+   VISTA REGISTRO
+========================== */
+
+.registro__contenedor {
+    max-width: 70%;
+    margin: 5rem auto; /* 50px ≈ 5rem */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem; /* 20px ≈ 2rem */
+    background-color: var(--beig);
+    padding: 2rem;
+    border-radius: 1rem;
+}
+
+.registro__formulario {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.registro__formulario input {
+    width: 80%;
+    padding: 0.8rem 1.2rem;
+    border: 0.1rem solid var(--gris);
+    height: 4rem;
+    border-radius: 0.5rem;
+    font-size: 1.6rem;
+}
+
+.registro__formulario button {
+    width: 80%;
+    padding: 1rem 0;
+    border: none;
+    border-radius: 0.4rem;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.6rem;
+    background-color: var(--oscuro);
+    color: var(--blanco);
+    transition: background-color 0.3s ease;
+}
+
+section .registro__formulario button:hover {
+    background-color: var(--gris);
+}

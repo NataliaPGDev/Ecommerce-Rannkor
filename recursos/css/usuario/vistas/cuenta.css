@@ -1,0 +1,100 @@
+.perfil__contenedor {
+    display: flex;
+    max-width: 120rem; 
+    margin: 5rem auto; 
+    background-color: var(--blanco);
+    border-radius: 1rem; 
+    overflow: hidden;
+    box-shadow: 0 0.4rem 1.5rem rgba(0,0,0,0.1); 
+}
+
+.perfil__contenedor > .sidebar {
+    width: 25rem; 
+    background-color: var(--beig);
+    color: var(--negro);
+    padding: 2rem; 
+    flex-shrink: 0;
+}
+
+.sidebar-title {
+    font-size: 2.4rem; 
+    padding-top: 1.8rem;
+    text-align: center;
+}
+
+.sidebar-menu > .menu-item {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.menu-item li {
+    list-style: none;
+}
+
+/* DISEÑO DE LAS SECCIONES DINÁMICAS DE LA CUENTA DEL USUARIO*/
+
+.perfil__contenido {
+    flex: 1;
+    padding: 3rem; /* 30px */
+    min-height: 40rem; /* 400px */
+    background-color: var(--blanco);
+}
+
+.perfil__contenido h2 {
+    font-size: 1.8rem; 
+    margin-bottom: 2rem; 
+}
+
+.perfil__contenido p {
+    font-size: 1rem; /* 10px base */
+    color: var(--oscuro);
+}
+
+.perfil__contenido form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem; /* 15px */
+}
+
+.perfil__contenido input,
+.perfil__contenido select,
+.perfil__contenido textarea {
+    padding: 1rem; /* 10px */
+    font-size: 1rem; /* 10px */
+    border: 0.1rem solid var(--gris); /* 1px */
+    border-radius: 0.5rem; /* 5px */
+}
+
+.perfil__contenido button {
+    padding: 1.2rem 2rem; /* 12px 20px */
+    font-size: 1rem; /* 10px */
+    background-color: #e74c3c;
+    color: var(--blanco);
+    border-radius: 0.5rem; /* 5px */
+}
+
+/* Lista de datos */
+.perfil__lista li {
+    font-size: 1.6rem; 
+    margin-bottom: 1rem; 
+    list-style: none;
+}
+
+/* Historial */
+.pedido-item {
+    border-radius: 0.8rem; /* 8px */
+    margin-bottom: 1rem;
+    padding: 1rem; /* 10px */
+}
+
+.detalle-pedido th,
+.detalle-pedido td {
+    border: 0.1rem solid var(--gris); /* 1px */
+    padding: 0.5rem; /* 5px */
+}
+
+.producto-info img.miniatura {
+    width: 5rem; /* 50px */
+    height: 5rem; /* 50px */
+}

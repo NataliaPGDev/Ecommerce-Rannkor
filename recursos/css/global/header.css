@@ -1,0 +1,126 @@
+/* ===== HEADER ===== */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 10rem;
+    background-color: #fff;
+    z-index: 100;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+}
+
+/* Contenedor principal */
+.nav__contenedor {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 3rem;
+}
+
+/* Logo */
+.nav__logo {
+    flex: 0 0 auto;
+}
+
+.nav__logo span {
+    font-weight: 700;
+    font-size: 3.5rem;
+    cursor: pointer;
+}
+
+/* Menú principal */
+.nav__menu {
+    flex: 1;
+    text-align: center;
+}
+
+.nav__menu ul {
+    display: inline-flex;
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
+}
+
+.nav__menu li {
+    list-style: none;
+}
+
+.nav__menu a {
+    color: #000;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.nav__menu a:hover {
+    color: var(--primario);
+}
+
+
+/* Contenedor de controles de usuario */
+.nav__controles-usuarios {
+    flex: 0 0 20rem; /* ancho fijo para iconos + botón */
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* separa iconos y botón */
+    gap: 1rem;
+}
+
+/* Lista de iconos (usuario y carrito) */
+.nav__controles-usuarios ul {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* Cada item de la lista */
+.nav__controles-usuarios li {
+    display: flex;
+    align-items: center;
+}
+
+/* Iconos ion */
+.nav__controles-usuarios ion-icon {
+    font-size: 2rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.nav__controles-usuarios ion-icon:hover {
+    transform: scale(1.6);
+}
+
+/* Botón administrador */
+.btn-admin {
+    width: 10rem;  /* más largo */
+    height: 2.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.btn-admin:hover {
+    background-color: #0056b3;
+    transform: translateY(-1px);
+}
+
+
+/* Padding para main según altura header */
+main {
+    padding-top: 10rem; /* igual a la altura del header */
+}

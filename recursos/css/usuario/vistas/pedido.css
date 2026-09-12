@@ -1,0 +1,145 @@
+/* ==========================
+   CONTENEDOR PRINCIPAL PEDIDO
+========================== */
+
+.pedido__contenedor {
+    max-width: 120rem;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+    font-size: 1.6rem;
+}
+
+.pedido__contenedor h1 {
+    font-size: 3rem;
+    color: var(--oscuro);
+    margin-bottom: 1rem;
+}
+
+.pedido__codigo {
+    font-size: 2rem;
+    color: var(--gris);
+    margin-left: 1rem;
+}
+
+.pedido__fecha,
+.pedido__estado {
+    font-size: 1.6rem;
+    color: var(--oscuro);
+    margin-bottom: 0.4rem;
+}
+
+/* ==========================
+   CONTENEDOR DE CONTENIDO
+========================== */
+
+.pedido__contenido {
+    display: flex;
+    gap: 4rem;
+    flex-wrap: wrap; /* responsive */
+    margin-top: 3rem;
+}
+
+/* ==========================
+   DATOS DEL CLIENTE
+========================== */
+
+.pedido__cliente {
+    flex: 1;
+    min-width: 30rem;
+    background-color: var(--claro);
+    padding: 2rem;
+    border-radius: 1.2rem;
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.08);
+}
+
+.pedido__cliente h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.pedido__cliente p {
+    font-size: 1.6rem;
+    margin-bottom: 0.8rem;
+}
+
+/* ==========================
+   DETALLES DEL PEDIDO
+========================== */
+
+.pedido__detalles {
+    flex: 1.2;
+    min-width: 35rem;
+    background-color: var(--claro);
+    padding: 2rem;
+    border-radius: 1.2rem;
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.08);
+}
+
+.pedido__detalles h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+
+.pedido__detalles h3 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+
+.pedido__detalles p {
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+}
+
+.pedido__total {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-top: 1.5rem;
+}
+
+/* ==========================
+   TABLA DE PRODUCTOS
+========================== */
+
+.pedido__productos {
+    margin-top: 2rem;
+}
+
+.pedido__productos h3 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+
+.pedido__tabla {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 1rem 2rem rgba(0,0,0,0.05);
+}
+
+.pedido__tabla th,
+.pedido__tabla td {
+    padding: 1.2rem 1rem;
+    text-align: center;
+    border-bottom: 0.1rem solid rgba(0,0,0,0.1);
+}
+
+.pedido__tabla thead {
+    background-color: var(--beig);
+}
+
+.pedido__tabla th {
+    font-size: 1.4rem;
+    text-transform: uppercase;
+    color: var(--oscuro);
+}
+
+.pedido__tabla tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.pedido__img {
+    width: 6rem;
+    height: auto;
+    border-radius: 0.5rem;
+}
