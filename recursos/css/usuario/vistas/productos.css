@@ -5,35 +5,52 @@
 .productos__contenedor {
     width: 90%;
     margin: 0 auto;
+    max-width: 120rem;
 }
 
 .productos__contenedor h3 {
-    font-size: 2.4rem; 
+    font-size: 2.4rem;
     padding-top: 2rem;
     padding-left: 4rem;
     padding-bottom: 1rem;
     font-weight: 700;
+    color: var(--oscuro);
+    letter-spacing: 0.04em;
 }
 
 /* Catálogo de productos */
 .productos__lista {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 2rem;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 2.4rem;
     margin: 0 auto;
-    padding-bottom: 5rem;
+    padding: 0 0 5rem;
+    list-style: none;
 }
 
 .productos__item {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    transition: transform 0.2s;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
     margin-bottom: 3rem;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(232, 223, 211, 0.3));
+    border: 0.1rem solid rgba(92, 92, 92, 0.08);
+    border-radius: 1.6rem;
+    padding: 1.2rem;
+    box-shadow: 0 1rem 2.4rem rgba(23, 23, 23, 0.05);
 }
 
 .productos__item:hover {
-    transform: translateY(-0.3125rem); /* 5px */
+    transform: translateY(-0.5rem);
+    box-shadow: 0 1.8rem 3.2rem rgba(23, 23, 23, 0.12);
+}
+
+.productos__item a {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 1.2rem;
 }
 
 .productos__item img {
@@ -41,24 +58,65 @@
     height: 100%;
     aspect-ratio: 2 / 3;
     object-fit: cover;
+    display: block;
+    border-radius: 1.2rem;
+    transition: transform 0.3s ease;
 }
 
-.productos__item p { margin: 0; }
+.productos__item:hover img {
+    transform: scale(1.02);
+}
+
+.productos__item p {
+    margin: 0;
+}
 
 .producto__nombre {
     font-weight: 700;
     font-size: 1.6rem;
     margin-top: 1.3rem;
     padding-top: 1rem;
+    color: var(--oscuro);
 }
 
 .producto__descripcion {
     font-weight: 400;
     font-size: 1.4rem;
-    padding-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    color: var(--gris);
+    line-height: 1.5;
 }
 
 .producto__precio {
-    font-weight: lighter;
-    font-size: 1.2rem;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--marron);
+    letter-spacing: 0.03em;
+}
+
+@media (max-width: 1024px) {
+    .productos__lista {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 560px) {
+    .productos__contenedor {
+        width: 92%;
+    }
+
+    .productos__contenedor h3 {
+        padding-left: 0;
+        font-size: 2rem;
+        text-align: center;
+    }
+
+    .productos__lista {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .productos__item {
+        margin-bottom: 0;
+    }
 }

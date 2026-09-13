@@ -2,19 +2,33 @@
    DETALLE PRODUCTO
 ========================== */
 
-a { color: var(--negro); }
+a {
+    color: var(--negro);
+}
 
 .detalleproducto__contenedor {
-    width: 90%;
+    width: min(120rem, 90%);
     margin: 4rem auto;
     display: grid;
-    grid-template-columns: 60% 40%;
+    grid-template-columns: 55% 45%;
     gap: 5rem;
+    align-items: start;
+}
+
+.detalleproducto__imagen {
+    background: linear-gradient(180deg, rgba(232, 223, 211, 0.22), rgba(255, 255, 255, 0.9));
+    border: 0.1rem solid rgba(23, 23, 23, 0.06);
+    border-radius: 2rem;
+    padding: 1.5rem;
+    box-shadow: 0 1.6rem 3rem rgba(23, 23, 23, 0.06);
 }
 
 .detalleproducto__imagen img {
     width: 100%;
     height: auto;
+    display: block;
+    border-radius: 1.4rem;
+    object-fit: cover;
 }
 
 .detalleproducto__especificaciones {
@@ -26,91 +40,182 @@ a { color: var(--negro); }
 .especificaciones__titulos {
     display: flex;
     flex-direction: column;
-    gap: 0.1rem;
+    gap: 0.8rem;
     margin-top: 0;
 }
 
-.especificaciones__titulos h1,
+.especificaciones__titulos h1 {
+    margin: 0;
+    font-size: clamp(2.4rem, 2.8vw, 4rem);
+    letter-spacing: -0.05em;
+    color: var(--oscuro);
+}
+
 .especificaciones__titulos p {
-    margin-top: 0;
+    margin: 0;
+    color: var(--gris);
+    font-size: 1.5rem;
+    line-height: 1.6;
+}
+
+.especificaciones__titulos p:last-child {
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: var(--marron);
+    letter-spacing: -0.04em;
 }
 
 /* Tallas */
 .formulario__tallas--titulo {
-    margin-top: 0;
+    margin: 0 0 1rem;
+    font-size: 1.4rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--oscuro);
 }
-.formulario__tallas { display: flex; flex-wrap: wrap; gap: 1rem; }
 
-.formulario__tallas--item input { display: none; }
+.formulario__tallas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.formulario__tallas--item input {
+    display: none;
+}
 
 .formulario__tallas--item span {
     display: inline-block;
     padding: 1.2rem 1.8rem;
     border-radius: 0.8rem;
-    font-weight: bold;
+    font-weight: 700;
     text-align: center;
     min-width: 5rem;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
+    border: 0.1rem solid transparent;
 }
 
 /* Disponible */
 .talla-on {
-    background-color: var(--claro);
+    background-color: rgba(232, 223, 211, 0.45);
     color: var(--oscuro);
-    border: 0.2rem solid var(--claro);
+    border-color: rgba(23, 23, 23, 0.08);
 }
 
-.talla-on:hover { background-color: #e8ca20; }
+.talla-on:hover {
+    background-color: rgba(139, 107, 74, 0.1);
+}
 
 /* Sin stock */
 .talla-off {
-    background-color: var(--gris);
-    color: var(--oscuro);
-    border: 0.2rem solid var(--gris);
+    background-color: rgba(94, 94, 94, 0.12);
+    color: rgba(23, 23, 23, 0.5);
+    border-color: rgba(94, 94, 94, 0.12);
     cursor: default;
     pointer-events: none;
 }
 
 /* Seleccionada */
-.formulario__tallas--item input:checked + .talla-on {
-    background-color: #e8ca20;
-    border-color: 0.2rem solid #e8ca20;
+.formulario__tallas--item input:checked+.talla-on {
+    background: linear-gradient(135deg, var(--oscuro), var(--grafito));
+    border-color: var(--oscuro);
+    color: var(--blanco);
+    box-shadow: 0 0.8rem 1.4rem rgba(23, 23, 23, 0.14);
 }
 
 /*Botón de agregar al carrito*/
 
 .formulario__tallas--btn {
     display: inline-block;
-    padding: 1.2rem 4rem;
+    padding: 1.3rem 4rem;
     margin-top: 2rem;
     margin-bottom: 1rem;
-    background-color: var(--oscuro);
+    background: linear-gradient(135deg, var(--oscuro), var(--grafito));
     color: var(--blanco);
-    border-radius: 1rem;
+    border: none;
+    border-radius: 999px;
     font-size: 1.6rem;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
-    transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+    box-shadow: 0 1.2rem 2rem rgba(23, 23, 23, 0.18);
+}
+
+.formulario__tallas--btn:hover {
+    transform: translateY(-0.1rem);
+    opacity: 0.98;
 }
 
 /* Menu especificaciones */
-.detalleproducto__menu { width: 90%; }
-.detalleproducto__menu--item { border-bottom: 0.1rem solid var(--gris); }
+.detalleproducto__menu {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.detalleproducto__menu--item {
+    border: 0.1rem solid rgba(23, 23, 23, 0.08);
+    border-radius: 1.2rem;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.7);
+}
+
+.detalleproducto__menu--item.activo {
+    border-color: rgba(23, 23, 23, 0.14);
+    box-shadow: 0 0.8rem 1.8rem rgba(23, 23, 23, 0.04);
+}
+
 .detalleproducto__menu--titulo {
     height: 6rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
-    padding: 1rem;
-    background-color: var(--claro);
+    padding: 1rem 1.5rem;
+    background: linear-gradient(180deg, rgba(232, 223, 211, 0.45), rgba(255, 255, 255, 0.7));
+    font-weight: 700;
+    color: var(--oscuro);
 }
-.detalleproducto__menu--titulo:hover { background-color: #eee; }
+
+.detalleproducto__menu--titulo:hover {
+    background: linear-gradient(180deg, rgba(232, 223, 211, 0.7), rgba(255, 255, 255, 0.75));
+}
+
+.detalleproducto__menu--icono {
+    font-size: 2rem;
+    line-height: 1;
+    color: var(--oscuro);
+    min-width: 2rem;
+    text-align: center;
+}
+
 .detalleproducto__menu--contenido {
     display: none;
     text-align: justify;
-    padding: 1rem;
+    padding: 1.5rem;
     background: var(--blanco);
+    color: var(--gris);
+    line-height: 1.7;
 }
-.detalleproducto__menu--contenido .activo { display: block; }
+
+.detalleproducto__menu--contenido.activo {
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .detalleproducto__contenedor {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+    }
+
+    .detalleproducto__imagen {
+        padding: 1rem;
+    }
+
+    .especificaciones__titulos p:last-child {
+        font-size: 2rem;
+    }
+}

@@ -14,6 +14,7 @@
     margin-bottom: 3rem;
     color: var(--oscuro);
     text-align: left;
+    letter-spacing: -0.04em;
 }
 
 /* ==========================
@@ -25,29 +26,31 @@
     max-width: 130rem;
     margin: 0 auto;
     border-collapse: collapse;
-    background-color: var(--claro);
-    border-radius: 1.2rem;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(232, 223, 211, 0.18));
+    border-radius: 1.6rem;
     overflow: hidden;
-    box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.08);
+    box-shadow: 0 1.6rem 3rem rgba(23, 23, 23, 0.08);
+    border: 0.1rem solid rgba(23, 23, 23, 0.06);
 }
 
 .carrito thead {
-    background-color: var(--beig);
+    background: linear-gradient(135deg, rgba(232, 223, 211, 0.8), rgba(255, 255, 255, 0.82));
 }
 
 .carrito th {
     padding: 1.6rem 1rem;
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.08em;
     color: var(--oscuro);
 }
 
 .carrito td {
     padding: 1.8rem 1rem;
     text-align: center;
-    border-bottom: 0.1rem solid rgba(0, 0, 0, 0.05);
+    border-bottom: 0.1rem solid rgba(23, 23, 23, 0.05);
     vertical-align: middle;
+    color: var(--oscuro);
 }
 
 .carrito tbody tr:last-child td {
@@ -66,13 +69,14 @@
     width: 6rem;
     height: auto;
     margin-right: 1.2rem;
-    border-radius: 0.6rem;
+    border-radius: 0.8rem;
     vertical-align: middle;
+    box-shadow: 0 0.6rem 1.2rem rgba(23, 23, 23, 0.08);
 }
 
 .carrito td:first-child span {
     vertical-align: middle;
-    font-weight: 500;
+    font-weight: 600;
 }
 
 /* ==========================
@@ -83,6 +87,10 @@
     display: inline-flex;
     align-items: center;
     gap: 0.8rem;
+    background: rgba(255, 255, 255, 0.6);
+    border: 0.1rem solid rgba(23, 23, 23, 0.06);
+    border-radius: 999px;
+    padding: 0.4rem 0.8rem;
 }
 
 .cantidad-control button {
@@ -90,22 +98,23 @@
     height: 3.2rem;
     border-radius: 50%;
     border: none;
-    background-color: var(--oscuro);
+    background: linear-gradient(135deg, var(--oscuro), var(--grafito));
     color: var(--blanco);
     font-size: 1.8rem;
+    line-height: 1;
     cursor: pointer;
-    transition: transform 0.15s ease, background-color 0.2s;
+    transition: transform 0.15s ease, opacity 0.2s ease;
 }
 
 .cantidad-control button:hover {
-    background-color: var(--gris);
-    transform: scale(1.1);
+    opacity: 0.96;
+    transform: scale(1.06);
 }
 
 .cantidad-control span {
     min-width: 2.4rem;
     text-align: center;
-    font-weight: 600;
+    font-weight: 700;
 }
 
 /* ==========================
@@ -121,12 +130,12 @@
 .btn-eliminar ion-icon {
     font-size: 2.2rem;
     color: var(--gris);
-    transition: color 0.2s, transform 0.2s;
+    transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .btn-eliminar:hover ion-icon {
-    color: #c0392b;
-    transform: scale(1.2);
+    color: #b94a48;
+    transform: scale(1.15);
 }
 
 /* ==========================
@@ -135,13 +144,14 @@
 
 .carrito tfoot td {
     padding: 2rem;
-    background-color: var(--claro);
+    background: rgba(255, 255, 255, 0.3);
 }
 
 .subtotal {
     text-align: right;
     font-size: 2rem;
     color: var(--oscuro);
+    font-weight: 700;
 }
 
 /* ==========================
@@ -155,17 +165,36 @@
 
 .btn-finalizar {
     display: inline-block;
-    padding: 1.6rem 2.5rem; 
-    background-color: var(--oscuro);
+    padding: 1.6rem 2.8rem;
+    background: linear-gradient(135deg, var(--oscuro), var(--grafito));
     color: var(--blanco);
-    border-radius: 3rem;
+    border-radius: 999px;
     font-size: 1.6rem;
-    font-weight: 600;
-    transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+    box-shadow: 0 1.2rem 2rem rgba(23, 23, 23, 0.18);
 }
 
 .btn-finalizar:hover {
-    background-color: var(--gris);
     transform: translateY(-0.2rem);
-    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.15);
+    box-shadow: 0 1.4rem 2.4rem rgba(23, 23, 23, 0.22);
+    opacity: 0.98;
+}
+
+@media (max-width: 768px) {
+    .carrito__contenedor {
+        padding: 3rem 1.2rem;
+    }
+
+    .carrito__contenedor h2 {
+        font-size: 2.2rem;
+        text-align: center;
+    }
+
+    .carrito {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
 }

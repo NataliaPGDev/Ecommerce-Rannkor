@@ -119,8 +119,9 @@ class CarritoControlador
 
             echo json_encode([
                 "success" => true,
-                "totalProducto" => $totales['totalProducto'],
-                "subtotalCarrito" => $totales['subtotalCarrito']
+                "totalProducto" => (float)$totales['totalProducto'],
+                "subtotalCarrito" => (float)$totales['subtotalCarrito'],
+                "subtotal" => (float)$totales['subtotalCarrito']
             ]);
         } catch (Exception $e) {
             http_response_code(500);
@@ -148,7 +149,8 @@ class CarritoControlador
 
             echo json_encode([
                 'success' => true,
-                'subtotal' => number_format($subtotal, 2)
+                'subtotal' => (float)$subtotal,
+                'subtotalCarrito' => (float)$subtotal
             ]);
         } catch (Exception $e) {
             http_response_code(400);

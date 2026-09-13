@@ -3,62 +3,87 @@
 ========================== */
 
 section .login__contenedor {
-    max-width: 70%;
-    margin: 5rem auto; /* 50px ≈ 5rem */
+    max-width: 42rem;
+    width: min(90%, 42rem);
+    margin: 5rem auto;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 3rem; /* 30px ≈ 3rem */
-    background-color: var(--beig);
-    padding: 2rem;
-    border-radius: 1rem;
+    gap: 2.8rem;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(240, 236, 230, 0.92));
+    padding: 3rem 2.5rem;
+    border-radius: 1.6rem;
+    box-shadow: 0 1.8rem 4rem rgba(29, 29, 29, 0.08);
+    border: 0.1rem solid rgba(92, 92, 92, 0.08);
 }
 
 section .login__formulario {
     width: 100%;
+    max-width: 34rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 2rem; /* 20px ≈ 2rem */
+    gap: 1.8rem;
 }
 
 section .login__formulario input {
-    width: 80%;
-    padding: 0.8rem 1.2rem; /* 8px 12px ≈ 0.8rem 1.2rem */
-    border: 0.1rem solid var(--gris);
-    height: 4rem; /* 40px ≈ 4rem */
-    border-radius: 0.5rem;
-    font-size: 1.6rem;
+    width: 100%;
+    padding: 1rem 1.2rem;
+    border: 0.1rem solid rgba(58, 58, 58, 0.18);
+    height: 4.5rem;
+    border-radius: 0.8rem;
+    font-size: 1.5rem;
+    background: rgba(255, 255, 255, 0.9);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 section .login__formulario input:focus {
     outline: none;
-    box-shadow: 0 0 0.5rem 0.2rem rgba(0, 0, 0, 0.1);
+    border-color: rgba(23, 23, 23, 0.5);
+    box-shadow: 0 0 0 0.3rem rgba(23, 23, 23, 0.08);
+    transform: translateY(-1px);
 }
 
 section .login__enlace--olvido {
-    padding-bottom: 1rem; /* 10px ≈ 1rem */
+    width: 100%;
+    text-align: right;
     color: var(--oscuro);
-    font-size: 1.4rem;
+    font-size: 1.3rem;
+}
+
+section .login__enlace--olvido a,
+section .login__enlace--cuenta a {
+    color: var(--oscuro);
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+
+section .login__enlace--olvido a:hover,
+section .login__enlace--cuenta a:hover {
+    opacity: 0.75;
 }
 
 section .login__formulario button {
-    width: 80%;
-    padding: 1rem 0; /* 10px ≈ 1rem */
+    width: 100%;
+    padding: 1.2rem 0;
     border: none;
-    border-radius: 0.4rem;
+    border-radius: 0.8rem;
     cursor: pointer;
-    font-weight: bold;
-    font-size: 1.6rem;
-    background-color: var(--oscuro);
+    font-weight: 700;
+    font-size: 1.5rem;
+    letter-spacing: 0.05rem;
+    background: linear-gradient(135deg, #1d1d1d, #3a3a3a);
     color: var(--blanco);
-    transition: background-color 0.3s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+    box-shadow: 0 1.2rem 2.2rem rgba(29, 29, 29, 0.18);
 }
 
 section .login__formulario button:hover {
-    background-color: var(--gris);
+    transform: translateY(-1px);
+    box-shadow: 0 1.4rem 2.6rem rgba(29, 29, 29, 0.22);
+    opacity: 0.98;
 }
 
 /* ==========================
@@ -66,49 +91,99 @@ section .login__formulario button:hover {
 ========================== */
 
 .registro__contenedor {
-    max-width: 70%;
-    margin: 5rem auto; /* 50px ≈ 5rem */
+    max-width: 42rem;
+    width: min(90%, 42rem);
+    margin: 5rem auto;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 2rem; /* 20px ≈ 2rem */
-    background-color: var(--beig);
-    padding: 2rem;
-    border-radius: 1rem;
+    gap: 2.8rem;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(240, 236, 230, 0.92));
+    padding: 3rem 2.5rem;
+    border-radius: 1.6rem;
+    box-shadow: 0 1.8rem 4rem rgba(29, 29, 29, 0.08);
+    border: 0.1rem solid rgba(92, 92, 92, 0.08);
 }
 
 .registro__formulario {
     width: 100%;
+    max-width: 34rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 2rem;
+    gap: 1.8rem;
 }
 
 .registro__formulario input {
-    width: 80%;
-    padding: 0.8rem 1.2rem;
-    border: 0.1rem solid var(--gris);
-    height: 4rem;
-    border-radius: 0.5rem;
-    font-size: 1.6rem;
+    width: 100%;
+    padding: 1rem 1.2rem;
+    border: 0.1rem solid rgba(58, 58, 58, 0.18);
+    height: 4.5rem;
+    border-radius: 0.8rem;
+    font-size: 1.5rem;
+    background: rgba(255, 255, 255, 0.9);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.registro__formulario input:focus {
+    outline: none;
+    border-color: rgba(23, 23, 23, 0.5);
+    box-shadow: 0 0 0 0.3rem rgba(23, 23, 23, 0.08);
+    transform: translateY(-1px);
 }
 
 .registro__formulario button {
-    width: 80%;
-    padding: 1rem 0;
+    width: 100%;
+    padding: 1.2rem 0;
     border: none;
-    border-radius: 0.4rem;
+    border-radius: 0.8rem;
     cursor: pointer;
-    font-weight: bold;
-    font-size: 1.6rem;
-    background-color: var(--oscuro);
+    font-weight: 700;
+    font-size: 1.5rem;
+    letter-spacing: 0.05rem;
+    background: linear-gradient(135deg, #1d1d1d, #3a3a3a);
     color: var(--blanco);
-    transition: background-color 0.3s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+    box-shadow: 0 1.2rem 2.2rem rgba(29, 29, 29, 0.18);
 }
 
 section .registro__formulario button:hover {
-    background-color: var(--gris);
+    transform: translateY(-1px);
+    box-shadow: 0 1.4rem 2.6rem rgba(29, 29, 29, 0.22);
+    opacity: 0.98;
+}
+
+@media (max-width: 480px) {
+
+    section .login__contenedor,
+    .registro__contenedor {
+        width: min(92%, 38rem);
+        padding: 2rem 1.5rem;
+        margin: 3rem auto;
+        gap: 2rem;
+    }
+
+    section .login__formulario,
+    .registro__formulario {
+        gap: 1.4rem;
+    }
+
+    section .login__formulario input,
+    .registro__formulario input {
+        height: 4.2rem;
+        font-size: 1.4rem;
+        padding: 0.9rem 1rem;
+    }
+
+    section .login__formulario button,
+    .registro__formulario button {
+        font-size: 1.4rem;
+        padding: 1rem 0;
+    }
+
+    section .login__enlace--olvido {
+        text-align: center;
+    }
 }

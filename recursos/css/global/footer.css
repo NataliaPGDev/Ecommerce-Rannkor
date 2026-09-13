@@ -1,14 +1,15 @@
 footer {
-    background-color: #222;
-    color: #fff;
-    padding: 40px 20px;
+    background: linear-gradient(180deg, #1b1b1b, #121212);
+    color: var(--blanco);
+    padding: 2.4rem 2rem 1.4rem;
     font-size: 1.4rem;
+    border-top: 0.1rem solid rgba(255, 255, 255, 0.08);
 }
 
 .footer__contenedor {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 30px;
+    gap: 2rem;
     max-width: 1200px;
     margin: 0 auto;
 }
@@ -16,38 +17,46 @@ footer {
 .footer__enlaces {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 0.8rem;
 }
 
 .footer__enlaces a {
-    color: #fff;
-    transition: color 0.3s;
+    color: rgba(255, 255, 255, 0.82);
+    transition: color 0.2s ease, opacity 0.2s ease;
+    text-decoration: none;
 }
 
 .footer__enlaces a:hover {
-    color: var(--primario);
+    color: var(--beig);
+    opacity: 0.95;
 }
 
 .footer__contacto p:first-child,
 .footer__redes p {
-    font-weight: bold;
-    margin-bottom: 10px;
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+    color: var(--blanco);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-size: 1.2rem;
 }
 
 .footer__iconos {
     display: flex;
-    gap: 15px;
+    gap: 1rem;
 }
 
 .footer__iconos img {
-    width: 28px;
-    height: 28px;
+    width: 2.2rem;
+    height: 2.2rem;
     cursor: pointer;
-    transition: transform 0.2s;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    opacity: 0.8;
 }
 
 .footer__iconos img:hover {
-    transform: scale(1.2);
+    transform: scale(1.15);
+    opacity: 1;
 }
 
 .footer__terminos ul {
@@ -57,19 +66,22 @@ footer {
 }
 
 .footer__terminos li {
-    margin-bottom: 8px;
+    margin-bottom: 0.6rem;
     cursor: pointer;
-    transition: color 0.3s;
+    color: rgba(255, 255, 255, 0.8);
+    transition: color 0.2s ease;
 }
 
 .footer__terminos li:hover {
-    color: var(--secundario);
+    color: var(--beig);
 }
 
 .footer__copyright {
     grid-column: 1 / -1;
     text-align: center;
-    margin-top: 20px;
+    margin-top: 1.4rem;
+    padding-top: 1rem;
     font-size: 1.2rem;
-    color: #aaa;
+    color: rgba(255, 255, 255, 0.6);
+    border-top: 0.1rem solid rgba(255, 255, 255, 0.08);
 }

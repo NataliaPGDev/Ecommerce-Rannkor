@@ -1,100 +1,236 @@
 .perfil__contenedor {
     display: flex;
-    max-width: 120rem; 
-    margin: 5rem auto; 
-    background-color: var(--blanco);
-    border-radius: 1rem; 
+    max-width: 120rem;
+    margin: 5rem auto;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.97), rgba(245, 239, 235, 0.75));
+    border-radius: 1.8rem;
     overflow: hidden;
-    box-shadow: 0 0.4rem 1.5rem rgba(0,0,0,0.1); 
+    box-shadow: 0 1.6rem 3rem rgba(23, 23, 23, 0.08);
+    border: 0.1rem solid rgba(23, 23, 23, 0.05);
 }
 
-.perfil__contenedor > .sidebar {
-    width: 25rem; 
-    background-color: var(--beig);
-    color: var(--negro);
-    padding: 2rem; 
+.perfil__contenedor>.sidebar {
+    width: 25rem;
+    background: linear-gradient(180deg, rgba(232, 223, 211, 0.9), rgba(255, 255, 255, 0.82));
+    color: var(--oscuro);
+    padding: 2.5rem 1.8rem;
     flex-shrink: 0;
+    border-right: 0.1rem solid rgba(23, 23, 23, 0.06);
 }
 
 .sidebar-title {
-    font-size: 2.4rem; 
+    font-size: 2.4rem;
     padding-top: 1.8rem;
     text-align: center;
+    letter-spacing: 0.06em;
+    color: var(--oscuro);
+    margin-bottom: 2rem;
 }
 
-.sidebar-menu > .menu-item {
+.sidebar-menu>.menu-item {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1rem;
+    padding: 0;
+    margin: 0;
 }
 
 .menu-item li {
     list-style: none;
 }
 
+.menu-item a {
+    display: block;
+    padding: 1.2rem 1.4rem;
+    border-radius: 0.9rem;
+    color: var(--oscuro);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.menu-item a:hover,
+.menu-item a.active {
+    background: linear-gradient(135deg, var(--oscuro), var(--grafito));
+    color: var(--blanco);
+    box-shadow: 0 0.8rem 1.5rem rgba(23, 23, 23, 0.12);
+}
+
 /* DISEÑO DE LAS SECCIONES DINÁMICAS DE LA CUENTA DEL USUARIO*/
 
 .perfil__contenido {
     flex: 1;
-    padding: 3rem; /* 30px */
-    min-height: 40rem; /* 400px */
-    background-color: var(--blanco);
+    padding: 3rem;
+    min-height: 40rem;
+    background-color: rgba(255, 255, 255, 0.65);
 }
 
 .perfil__contenido h2 {
-    font-size: 1.8rem; 
-    margin-bottom: 2rem; 
+    font-size: 2.2rem;
+    margin-bottom: 2rem;
+    color: var(--oscuro);
+    letter-spacing: -0.04em;
 }
 
 .perfil__contenido p {
-    font-size: 1rem; /* 10px base */
-    color: var(--oscuro);
+    font-size: 1.5rem;
+    color: var(--gris);
+    line-height: 1.6;
 }
 
 .perfil__contenido form {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem; /* 15px */
+    gap: 1.5rem;
 }
 
 .perfil__contenido input,
 .perfil__contenido select,
 .perfil__contenido textarea {
-    padding: 1rem; /* 10px */
-    font-size: 1rem; /* 10px */
-    border: 0.1rem solid var(--gris); /* 1px */
-    border-radius: 0.5rem; /* 5px */
+    width: 100%;
+    padding: 1.2rem 1.4rem;
+    font-size: 1.5rem;
+    border: 0.1rem solid rgba(23, 23, 23, 0.12);
+    border-radius: 0.9rem;
+    background: rgba(255, 255, 255, 0.8);
+    color: var(--oscuro);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.perfil__contenido input:focus,
+.perfil__contenido select:focus,
+.perfil__contenido textarea:focus {
+    outline: none;
+    border-color: rgba(23, 23, 23, 0.35);
+    box-shadow: 0 0 0 0.3rem rgba(23, 23, 23, 0.06);
 }
 
 .perfil__contenido button {
-    padding: 1.2rem 2rem; /* 12px 20px */
-    font-size: 1rem; /* 10px */
-    background-color: #e74c3c;
+    padding: 1.2rem 2.2rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--oscuro), var(--grafito));
     color: var(--blanco);
-    border-radius: 0.5rem; /* 5px */
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 0.9rem 1.8rem rgba(23, 23, 23, 0.14);
+}
+
+.perfil__contenido button:hover {
+    transform: translateY(-0.1rem);
+    box-shadow: 0 1.2rem 2.2rem rgba(23, 23, 23, 0.18);
 }
 
 /* Lista de datos */
+.perfil__lista {
+    padding: 0;
+    margin: 0;
+}
+
 .perfil__lista li {
-    font-size: 1.6rem; 
-    margin-bottom: 1rem; 
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
     list-style: none;
+    color: var(--oscuro);
+    padding: 0.8rem 0;
+    border-bottom: 0.1rem solid rgba(23, 23, 23, 0.06);
 }
 
 /* Historial */
+.historial-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+}
+
 .pedido-item {
-    border-radius: 0.8rem; /* 8px */
-    margin-bottom: 1rem;
-    padding: 1rem; /* 10px */
+    border-radius: 1.8rem;
+    margin-bottom: 0;
+    padding: 1.6rem 1.8rem;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(245, 240, 235, 0.78));
+    border: 0.1rem solid rgba(23, 23, 23, 0.06);
+    box-shadow: 0 1rem 2rem rgba(23, 23, 23, 0.05);
+}
+
+.pedido-resumen {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem 1.6rem;
+    color: var(--oscuro);
+    font-size: 1.4rem;
+}
+
+.pedido-resumen strong {
+    color: var(--oscuro);
+    font-weight: 700;
+}
+
+.btn-ver-detalle {
+    border: none;
+    border-radius: 999px;
+    background: linear-gradient(135deg, var(--oscuro), var(--grafito));
+    color: var(--blanco);
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    padding: 0.9rem 1.8rem;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 0.8rem 1.6rem rgba(23, 23, 23, 0.12);
+}
+
+.btn-ver-detalle:hover {
+    transform: translateY(-0.1rem);
+    box-shadow: 0 1.2rem 2rem rgba(23, 23, 23, 0.16);
+}
+
+.detalle-pedido {
+    width: 100%;
+    margin-top: 1.5rem;
+    border-collapse: collapse;
+    display: none;
 }
 
 .detalle-pedido th,
 .detalle-pedido td {
-    border: 0.1rem solid var(--gris); /* 1px */
-    padding: 0.5rem; /* 5px */
+    border: 0.1rem solid rgba(23, 23, 23, 0.08);
+    padding: 0.9rem 1rem;
+    text-align: left;
+    font-size: 1.3rem;
+}
+
+.detalle-pedido th {
+    background: rgba(232, 223, 211, 0.45);
+    color: var(--oscuro);
 }
 
 .producto-info img.miniatura {
-    width: 5rem; /* 50px */
-    height: 5rem; /* 50px */
+    width: 5rem;
+    height: 5rem;
+    border-radius: 0.8rem;
+    object-fit: cover;
+}
+
+@media (max-width: 768px) {
+    .perfil__contenedor {
+        flex-direction: column;
+        margin: 3rem 1.2rem;
+    }
+
+    .perfil__contenedor>.sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 0.1rem solid rgba(23, 23, 23, 0.06);
+    }
+
+    .perfil__contenido {
+        padding: 2rem 1.5rem;
+    }
 }

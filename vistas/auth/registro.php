@@ -8,7 +8,7 @@
 <input type="email" name="email" id="email" placeholder="Correo electrónico">
 <input type="password" name="password" id="password" placeholder="Contraseña">
 
-<p>Al registrarte aceptas la Política de Privacidad y las Condiciones generales de Panama Jack</p>
+<p>Al registrarte aceptas la Política de Privacidad y las Condiciones generales.</p>
 
 <button class="registro__boton" type="submit">CREAR</button>
 

@@ -52,13 +52,17 @@
             <nav class="nav__controles-usuarios">
                 <ul>
                     <!-- Ícono de usuario -->
-                    <li>
+                    <li class="nav__usuario-menu">
                         <?php if (isset($_SESSION['usuario'])): ?>
-                            <a href="index.php?controller=usuario&action=perfil">
+                            <button class="nav__usuario-toggle" type="button" aria-expanded="false" aria-label="Menú de usuario">
                                 <ion-icon name="person-circle-outline"></ion-icon>
-                            </a>
+                            </button>
+                            <div class="nav__usuario-submenu" role="menu" aria-label="Menú de cuenta">
+                                <a href="index.php?controller=usuario&action=perfil" role="menuitem">Mi cuenta</a>
+                                <a href="index.php?controller=auth&action=logout" role="menuitem">Cerrar sesión</a>
+                            </div>
                         <?php else: ?>
-                            <a href="index.php?controller=auth&action=login">
+                            <a href="index.php?controller=auth&action=login" aria-label="Iniciar sesión">
                                 <ion-icon name="person-outline"></ion-icon>
                             </a>
                         <?php endif; ?>
@@ -84,4 +88,30 @@
 
         </div>
     </header>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const userMenu = document.querySelector('.nav__usuario-menu');
+            const userToggle = document.querySelector('.nav__usuario-toggle');
+
+            if (!userMenu || !userToggle) return;
+
+            const toggleMenu = () => {
+                const isOpen = userMenu.classList.contains('is-open');
+                userMenu.classList.toggle('is-open', !isOpen);
+                userToggle.setAttribute('aria-expanded', String(!isOpen));
+            };
+
+            userToggle.addEventListener('click', function(event) {
+                event.stopPropagation();
+                toggleMenu();
+            });
+
+            document.addEventListener('click', function(event) {
+                if (!userMenu.contains(event.target)) {
+                    userMenu.classList.remove('is-open');
+                    userToggle.setAttribute('aria-expanded', 'false');
+                }
+            });
+        });
+    </script>
     <main>

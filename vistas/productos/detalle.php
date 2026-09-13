@@ -68,23 +68,23 @@
 
 
       <div class="detalleproducto__menu">
-        <div class="detalleproducto__menu--item">
-          <div class="detalleproducto__menu--titulo">
+        <div class="detalleproducto__menu--item activo">
+          <div class="detalleproducto__menu--titulo" tabindex="0" role="button" aria-expanded="true">
             <span>Descripción</span>
-            <span>➕</span>
+            <span class="detalleproducto__menu--icono">−</span>
           </div>
-          <div class="detalleproducto__menu--contenido.activo">
+          <div class="detalleproducto__menu--contenido activo">
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.
               Alias at nostrum praesentium ullam, natus pariatur.</p>
           </div>
         </div>
 
         <div class="detalleproducto__menu--item">
-          <div class="detalleproducto__menu--titulo">
+          <div class="detalleproducto__menu--titulo" tabindex="0" role="button" aria-expanded="false">
             <span>Sello de garantía</span>
-            <span>➕</span>
+            <span class="detalleproducto__menu--icono">➕</span>
           </div>
-          <div class="detalleproducto__menu--contenido.activo">
+          <div class="detalleproducto__menu--contenido">
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.
               Alias at nostrum praesentium ullam, natus pariatur.</p>
           </div>
@@ -94,3 +94,45 @@
     </div>
   </div>
 </section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const items = document.querySelectorAll('.detalleproducto__menu--item');
+
+    items.forEach((item) => {
+      const titulo = item.querySelector('.detalleproducto__menu--titulo');
+      const contenido = item.querySelector('.detalleproducto__menu--contenido');
+      const icono = item.querySelector('.detalleproducto__menu--icono');
+
+      const alternar = () => {
+        const estaAbierto = item.classList.contains('activo');
+
+        items.forEach((el) => {
+          el.classList.remove('activo');
+          const contenidoEl = el.querySelector('.detalleproducto__menu--contenido');
+          const iconoEl = el.querySelector('.detalleproducto__menu--icono');
+          const tituloEl = el.querySelector('.detalleproducto__menu--titulo');
+
+          if (contenidoEl) contenidoEl.classList.remove('activo');
+          if (iconoEl) iconoEl.textContent = '➕';
+          if (tituloEl) tituloEl.setAttribute('aria-expanded', 'false');
+        });
+
+        if (!estaAbierto) {
+          item.classList.add('activo');
+          if (contenido) contenido.classList.add('activo');
+          if (icono) icono.textContent = '−';
+          if (titulo) titulo.setAttribute('aria-expanded', 'true');
+        }
+      };
+
+      titulo.addEventListener('click', alternar);
+      titulo.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          alternar();
+        }
+      });
+    });
+  });
+</script>

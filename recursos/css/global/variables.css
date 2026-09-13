@@ -1,8 +1,11 @@
 :root {
-    --oscuro:#051009;
-    --gris:#8e9090;
-    --beig:#f4e0bb;
-    --claro:#f5efeb;
-    --blanco: #FFF;
-    --negro: #000;
+    --oscuro: #171717;
+    --gris: #5E5E5E;
+    --beig: #E8DFD3;
+    --claro: #F7F5F2;
+    --blanco: #FFFFFF;
+    --negro: #171717;
+    --marron: #8B6B4A;
+    --marron-claro: #CDBBA6;
+    --grafito: #2F2F2F;
 }
