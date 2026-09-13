@@ -4,20 +4,23 @@ require_once __DIR__ . '/../modelo/productos.php';
 require_once __DIR__ . '/../modelo/carrito.php';
 require_once __DIR__ . '/../modelo/carritoDetalle.php';
 
-class CarritoControlador {
+class CarritoControlador
+{
     private Productos $productoModelo;
     private Carrito $carritoModelo;
     private CarritoDetalle $carritoDetalleModelo;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->productoModelo       = new Productos();
         $this->carritoModelo        = new Carrito();
         $this->carritoDetalleModelo = new CarritoDetalle();
     }
 
-    
+
     //---------------------------------------------------------------------- FUNCION OBTENER O CREAR CARRITO ACTIVO DEL USUARIO
-    private function obtenerCarritoUsuario(){
+    private function obtenerCarritoUsuario()
+    {
         $id_usuario = $_SESSION['usuario']['id'] ?? null;
         if (!$id_usuario) {
             throw new Exception("Usuario no logueado.");
@@ -32,9 +35,10 @@ class CarritoControlador {
         return $carrito;
     }
 
-    
+
     //----------------------------------------------------------------------- FUNCIÓN VER CARRITO
-    public function ver($params = []){
+    public function ver($params = [])
+    {
         try {
             $carrito  = $this->obtenerCarritoUsuario();
             $detalles = $this->carritoDetalleModelo->obtenerPorCarrito($carrito['id_carrito']);
@@ -57,15 +61,16 @@ class CarritoControlador {
         }
     }
 
-    
+
     //--------------------------------------------------------------------------------- FUNCION AGREGAR PRODUCTO AL CARRITO
-    public function agregar($params = []){
+    public function agregar($params = [])
+    {
         try {
             $carrito = $this->obtenerCarritoUsuario();
 
             $id_producto       = $params['id_producto'] ?? null;
             $id_productostalla = $params['id_productostalla'] ?? null;
-            $cantidad          = $params['cantidad'] ?? 1;
+            $cantidad          = (int)($params['cantidad'] ?? 1);
 
             if (!$id_producto || !$id_productostalla || $cantidad < 1) {
                 throw new Exception("Datos inválidos para agregar producto.");
@@ -75,6 +80,8 @@ class CarritoControlador {
             if (!$producto || !isset($producto['precio'])) {
                 throw new Exception("No se pudo obtener el precio del producto.");
             }
+
+            $this->productoModelo->validarStockDisponible($id_productostalla, $cantidad);
 
             $precio_unitario = $producto['precio'];
 
@@ -92,9 +99,10 @@ class CarritoControlador {
         }
     }
 
-   
+
     //---------------------------------------------------------------------------------- FUNCION ENDPOINT ACTUALIZAR CANTIDAD VIA FECHT
-    public function actualizarCantidad($data){
+    public function actualizarCantidad($data)
+    {
         header('Content-Type: application/json');
         try {
             $id_carritodetalle = isset($data['id_carritodetalle']) ? (int)$data['id_carritodetalle'] : null;
@@ -123,9 +131,10 @@ class CarritoControlador {
         }
     }
 
-    
+
     //-------------------------------------------------------------------------------  FUNCION ENDPOINT ELIMINAR PRODUCTO CON AJAX
-    public function eliminarProducto(){
+    public function eliminarProducto()
+    {
         header('Content-Type: application/json');
 
         try {
@@ -153,7 +162,8 @@ class CarritoControlador {
 
 
     //--------------------------------------------------------------------------------------- FUNCION VACÍAR CARRITO
-    public function vaciarCarrito(){
+    public function vaciarCarrito()
+    {
         header('Content-Type: application/json');
 
         try {
@@ -167,9 +177,10 @@ class CarritoControlador {
         }
     }
 
-    
+
     //---------------------------------------------------------------------------------------- FUNCIÓN CHECKOUT
-    public function checkout(){
+    public function checkout()
+    {
         try {
             $carrito = $this->obtenerCarritoUsuario();
             $this->carritoModelo->actualizarEstado($carrito['id_carrito'], 'pendiente');
@@ -181,9 +192,10 @@ class CarritoControlador {
         }
     }
 
-    
+
     //----------------------------------------------------------------------------------------- FINALIZAR COMPRA
-    public function finalizar(){
+    public function finalizar()
+    {
         try {
             $carrito = $this->obtenerCarritoUsuario();
             $this->carritoModelo->actualizarEstado($carrito['id_carrito'], 'finalizado');
@@ -195,9 +207,10 @@ class CarritoControlador {
         }
     }
 
-    
+
     //------------------------------------------------------------------------------------------- FUNCIÓN CANCELAR CARRITO
-    public function cancelar(){
+    public function cancelar()
+    {
         try {
             $carrito = $this->obtenerCarritoUsuario();
             $this->carritoModelo->actualizarEstado($carrito['id_carrito'], 'cancelado');
@@ -209,4 +222,3 @@ class CarritoControlador {
         }
     }
 }
-?>

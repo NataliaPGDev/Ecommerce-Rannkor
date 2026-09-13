@@ -91,7 +91,7 @@ define('DB_PORT', 3306);
 | Rol           | Email             | Contraseña |
 | ------------- | ----------------- | ---------- |
 | Cliente       | cliente1@gmail.com | cliente123# |
-| Administrador | admin@gmail.com   | admin123#  |
+| Administrador | admin@gmail.com   | admin123  |
 
 ## Roles de usuario
 

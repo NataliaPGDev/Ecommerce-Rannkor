@@ -1,3 +1,25 @@
+const APP_BASE = (() => {
+  const baseTag = document.querySelector("base");
+  if (baseTag && baseTag.getAttribute("href")) {
+    return new URL(
+      baseTag.getAttribute("href"),
+      window.location.href,
+    ).pathname.replace(/\/+$/, "");
+  }
+
+  const currentPath = window.location.pathname;
+  const basePath = currentPath.includes("index.php")
+    ? currentPath.substring(0, currentPath.lastIndexOf("/"))
+    : currentPath;
+
+  return basePath.replace(/\/+$/, "");
+})();
+
+function appUrl(path) {
+  const normalized = path.startsWith("/") ? path : `/${path}`;
+  return `${APP_BASE || ""}${normalized}`;
+}
+
 /** ====== VARIABLES GLOBALES ====== */
 let productosData = [];
 
@@ -27,7 +49,7 @@ function initModalesProductos() {
     if (e.key === "Escape") {
       cerrarModalCrearProducto();
       cerrarModalEditarProducto();
-      cerrarModalAgregarTalla()
+      cerrarModalAgregarTalla();
     }
   });
 }
@@ -49,18 +71,17 @@ function cerrarModalEditarProducto() {
 }
 
 function abrirModalAgregarTalla(id_producto) {
-    document.getElementById("add_id_producto").value = id_producto;
-    document.getElementById("modalAgregarTalla").classList.add("show");
+  document.getElementById("add_id_producto").value = id_producto;
+  document.getElementById("modalAgregarTalla").classList.add("show");
 }
 
 function cerrarModalAgregarTalla() {
-    document.getElementById("modalAgregarTalla").classList.remove("show");
+  document.getElementById("modalAgregarTalla").classList.remove("show");
 }
-
 
 /** ====== CARGAR PRODUCTOS ====== */
 function cargarProductos() {
-  fetch("/routeradmin.php?accion=listarProductos")
+  fetch(appUrl("routeradmin.php?accion=listarProductos"))
     .then((res) => res.json())
     .then((resp) => {
       if (!resp.success) {
@@ -82,8 +103,8 @@ function cargarProductos() {
       tbody.innerHTML = "";
 
       productosData.forEach((prod) => {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
         <td>${prod.id_producto}</td>
         <td>${prod.nombre_producto}</td>
         <td>${prod.descripcion ?? ""}</td>
@@ -104,9 +125,8 @@ function cargarProductos() {
              </button>
         </td>
     `;
-    tbody.appendChild(tr);
-});
-
+        tbody.appendChild(tr);
+      });
     })
     .catch((err) => alert("Error al cargar productos: " + err.message));
 }
@@ -133,10 +153,9 @@ function initDelegacionProductos() {
     }
 
     if (agregarTallaBtn) {
-    const id_producto = parseInt(agregarTallaBtn.dataset.id_producto);
-    abrirModalAgregarTalla(id_producto);
-}
-
+      const id_producto = parseInt(agregarTallaBtn.dataset.id_producto);
+      abrirModalAgregarTalla(id_producto);
+    }
   });
 }
 
@@ -156,7 +175,7 @@ function crearProducto() {
     imagen_url: document.getElementById("imagen").value,
   };
 
-  fetch("/routeradmin.php?accion=insertarProducto", {
+  fetch(appUrl("routeradmin.php?accion=insertarProducto"), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(datos),
@@ -175,7 +194,11 @@ function crearProducto() {
 
 /** ====== EDITAR ====== */
 function editarProducto(id_producto, id_productostalla) {
-  const p = productosData.find(x => Number(x.id_producto) === id_producto && Number(x.id_productostalla) === id_productostalla);
+  const p = productosData.find(
+    (x) =>
+      Number(x.id_producto) === id_producto &&
+      Number(x.id_productostalla) === id_productostalla,
+  );
   if (!p) return alert("Producto no encontrado");
 
   document.getElementById("edit_id_producto").value = p.id_producto;
@@ -183,7 +206,9 @@ function editarProducto(id_producto, id_productostalla) {
   document.getElementById("edit_nombre").value = p.nombre_producto;
   document.getElementById("edit_descripcion").value = p.descripcion ?? "";
   document.getElementById("edit_categoria").value = p.categoria ?? "";
-  document.getElementById("edit_precio").value = parseFloat(p.precio).toFixed(2);
+  document.getElementById("edit_precio").value = parseFloat(p.precio).toFixed(
+    2,
+  );
   document.getElementById("edit_talla").value = p.id_talla ?? "";
   document.getElementById("edit_stock").value = p.stock ?? 0;
   document.getElementById("edit_imagen").value = p.imagen_url ?? "";
@@ -191,12 +216,16 @@ function editarProducto(id_producto, id_productostalla) {
   abrirModalEditarProducto();
 }
 
-
 function guardarCambiosProducto() {
-  const id_producto = parseInt(document.getElementById("edit_id_producto").value);
-  const id_productostalla = parseInt(document.getElementById("edit_id_productostalla").value);
+  const id_producto = parseInt(
+    document.getElementById("edit_id_producto").value,
+  );
+  const id_productostalla = parseInt(
+    document.getElementById("edit_id_productostalla").value,
+  );
 
-  if (isNaN(id_producto) || isNaN(id_productostalla)) return alert("IDs no válidos");
+  if (isNaN(id_producto) || isNaN(id_productostalla))
+    return alert("IDs no válidos");
 
   const datos = {
     id_producto,
@@ -209,13 +238,13 @@ function guardarCambiosProducto() {
     stock: parseInt(document.getElementById("edit_stock").value),
   };
 
-  fetch("/routeradmin.php?accion=actualizarProducto", {
+  fetch(appUrl("routeradmin.php?accion=actualizarProducto"), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(datos),
   })
-    .then(res => res.json())
-    .then(resp => {
+    .then((res) => res.json())
+    .then((resp) => {
       if (resp.success) {
         cerrarModalEditarProducto();
         cargarProductos();
@@ -223,14 +252,15 @@ function guardarCambiosProducto() {
         alert("Error: " + resp.message);
       }
     })
-    .catch(err => alert("Error al actualizar producto: " + err.message));
+    .catch((err) => alert("Error al actualizar producto: " + err.message));
 }
-
 
 /** ====== GUARDAR PRODUCTO CON TALLA ====== */
 
 function guardarTallaProducto() {
-  const id_producto = parseInt(document.getElementById("add_id_producto").value);
+  const id_producto = parseInt(
+    document.getElementById("add_id_producto").value,
+  );
   const id_talla = parseInt(document.getElementById("add_talla").value);
   const stock = parseInt(document.getElementById("add_stock").value);
 
@@ -238,45 +268,42 @@ function guardarTallaProducto() {
 
   const datos = {
     id_producto,
-    tallas: [
-      { id_talla, stock }
-    ]
+    tallas: [{ id_talla, stock }],
   };
 
-  fetch("/routeradmin.php?accion=agregarTallasProducto", {
+  fetch(appUrl("routeradmin.php?accion=agregarTallasProducto"), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(datos)
+    body: JSON.stringify(datos),
   })
-  .then(res => res.json())
-  .then(resp => {
-    if (resp.success) {
-      cerrarModalAgregarTalla();
-      cargarProductos();
-    } else {
-      alert("Error: " + resp.message);
-    }
-  })
-  .catch(err => alert("Error al agregar talla: " + err.message));
+    .then((res) => res.json())
+    .then((resp) => {
+      if (resp.success) {
+        cerrarModalAgregarTalla();
+        cargarProductos();
+      } else {
+        alert("Error: " + resp.message);
+      }
+    })
+    .catch((err) => alert("Error al agregar talla: " + err.message));
 }
-
 
 /** ====== ELIMINAR ====== */
 function eliminarProducto(id_productostalla) {
   if (!confirm("¿Deseas eliminar este producto/talla?")) return;
 
-  fetch("/routeradmin.php?accion=eliminarProducto", {
+  fetch(appUrl("routeradmin.php?accion=eliminarProducto"), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ id_productostalla }),
   })
-    .then(res => res.json())
-    .then(resp => {
+    .then((res) => res.json())
+    .then((resp) => {
       if (resp.success) {
         cargarProductos();
       } else {
         alert("Error: " + resp.message);
       }
     })
-    .catch(err => alert("Error al eliminar producto: " + err.message));
+    .catch((err) => alert("Error al eliminar producto: " + err.message));
 }

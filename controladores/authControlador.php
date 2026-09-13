@@ -28,28 +28,43 @@ class AuthControlador
     //----------------------------------------------------------------FUNCION PARA PROCESAR EL LOGIN
     public function procesarLogin($params = [])
     {
-
         $mail = trim($params['email'] ?? '');
         $password = trim($params['password'] ?? '');
+
+        $_SESSION['errores_login'] = [];
+
+        if ($mail === '') {
+            $_SESSION['errores_login']['mail'] = "El correo es obligatorio.";
+        } elseif (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
+            $_SESSION['errores_login']['mail'] = "Introduce un correo válido.";
+        }
+
+        if ($password === '') {
+            $_SESSION['errores_login']['password'] = "La contraseña es obligatoria.";
+        }
+
+        if (!empty($_SESSION['errores_login'])) {
+            $_SESSION['mail_login'] = $mail;
+            header("Location: index.php?controller=auth&action=login");
+            exit();
+        }
+
         $_SESSION['mail_login'] = $mail;
 
         $usuario = $this->usuarioModelo->obtenerUsuario($mail);
         $passwordHash = isset($usuario['password']) ? trim((string)$usuario['password']) : '';
 
         if ($usuario && password_verify($password, $passwordHash)) {
-
-            // Limpiar errores previos
             unset($_SESSION['errores_login']);
 
             $_SESSION['usuario'] = [ #aqui estan los datos de sesion guardados
                 'id'     => $usuario['id_usuario'],
                 'nombre' => $usuario['nombre'],
                 'mail'   => $usuario['mail'],
-                'rol'    => $usuario['id_rol']
+                'rol'    => (int)$usuario['id_rol']
             ];
 
             $_SESSION['ultimo_acceso'] = time();
-
 
             if ($_SESSION['usuario']['rol'] == 1) {
                 header("Location: index.php?controller=admin&action=dashboard");
@@ -57,11 +72,11 @@ class AuthControlador
                 header("Location: index.php?controller=usuario&action=perfil");
             }
             exit();
-        } else {
-            $_SESSION['errores_login']['general'] = "Correo o contraseña incorrectos";
-            header("Location: index.php?controller=auth&action=login");
-            exit();
         }
+
+        $_SESSION['errores_login']['general'] = "Correo o contraseña incorrectos.";
+        header("Location: index.php?controller=auth&action=login");
+        exit();
     }
 
     //------------------------------------------------------------------------------------ FUNCION LOGOUT

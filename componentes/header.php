@@ -8,7 +8,7 @@
 
     <!-- estilos CSS usuario--->
     <link rel="stylesheet" href="recursos/css/normalize.css">
-    <link rel="stylesheet" href="recursos/css/usuario/usuario.css" /> 
+    <link rel="stylesheet" href="recursos/css/usuario/usuario.css" />
     <link rel="stylesheet" href="recursos/css/usuario/vistas/home.css">
     <link rel="stylesheet" href="recursos/css/usuario/vistas/formularios.css">
     <link rel="stylesheet" href="recursos/css/usuario/vistas/cuenta.css">
@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="recursos/css/usuario/vistas/carrito.css">
     <link rel="stylesheet" href="recursos/css/usuario/vistas/checkout.css">
     <link rel="stylesheet" href="recursos/css/usuario/vistas/pedido.css">
-    
+
     <!-- estilos CSS administrador--->
     <link rel="stylesheet" href="recursos/css/admin/administrador.css">
     <link rel="stylesheet" href="recursos/css/admin/vistas/dashboard.css">
@@ -28,6 +28,7 @@
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
 </head>
+
 <body>
     <header>
         <div class="nav__contenedor">
@@ -41,8 +42,8 @@
             <!-- Menú principal -->
             <nav class="nav__menu">
                 <ul>
-                    <li><a href="index.php?controller=productos&action=listarCategoria&categoria=mujer">MUJER</a></li>
-                    <li><a href="index.php?controller=productos&action=listarCategoria&categoria=hombre">HOMBRE</a></li>
+                    <li><a href="index.php?controller=productos&action=listar&categoria=mujer">MUJER</a></li>
+                    <li><a href="index.php?controller=productos&action=listar&categoria=hombre">HOMBRE</a></li>
                     <li><a href="#">NOSOTROS</a></li>
                 </ul>
             </nav>

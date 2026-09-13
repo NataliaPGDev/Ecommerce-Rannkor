@@ -7,14 +7,16 @@ require_once __DIR__ . '/../componentes/datos.php';
 require_once __DIR__ . '/../configuracion/conexion_bd.php';
 
 
-class PedidoControlador{
+class PedidoControlador
+{
     private Pedido $pedidoModel;
     private Carrito $carritoModel;
     private CarritoDetalle $carritoDetalleModel;
     private Usuario $usuarioModel;
     private mysqli $conn;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->pedidoModel        = new Pedido();
         $this->carritoModel       = new Carrito();
         $this->carritoDetalleModel = new CarritoDetalle();
@@ -22,9 +24,10 @@ class PedidoControlador{
         $this->conn = Conexion::getConexion();
     }
 
-    
+
     //------------------------------------------------------------------------------ FUNCION PARA GENERAR VISTA CHECKOUT
-    public function checkout($params = []){
+    public function checkout($params = [])
+    {
 
         try {
             // Middleware ya validó sesión
@@ -81,9 +84,10 @@ class PedidoControlador{
         }
     }
 
-    
+
     //------------------------------------------------------------------------------------- FUNCION FINALIZAR COMPRA
-    public function compra($params = []) {
+    public function compra($params = [])
+    {
         $this->conn->begin_transaction();
         try {
 
@@ -145,6 +149,17 @@ class PedidoControlador{
                 throw new Exception("El carrito está vacío.");
             }
 
+            foreach ($detalles as $item) {
+                $id_productostalla = $item['id_productostalla'] ?? null;
+                $cantidad = (int)($item['cantidad'] ?? 0);
+
+                if (!$id_productostalla) {
+                    throw new Exception("Hay un producto sin talla válida en el carrito.");
+                }
+
+                $this->pedidoModel->validarStockParaPedido($id_productostalla, $cantidad);
+            }
+
             // Calcular subtotal
             $subtotal = 0;
             foreach ($detalles as $item) {
@@ -172,11 +187,18 @@ class PedidoControlador{
 
             // Insertar detalles en la tabla pedido detalles
             foreach ($detalles as $item) {
+                $id_productostalla = $item['id_productostalla'] ?? null;
+                $cantidad = (int)($item['cantidad'] ?? 0);
+
+                if ($id_productostalla) {
+                    $this->pedidoModel->descontarStockProducto($id_productostalla, $cantidad);
+                }
+
                 $this->pedidoModel->insertarDetalle(
                     $id_pedido,
                     $item['producto_id'],
                     $item['talla'],
-                    $item['cantidad'],
+                    $cantidad,
                     $item['precio_unitario']
                 );
             }
@@ -196,9 +218,10 @@ class PedidoControlador{
         }
     }
 
-    
+
     //---------------------------------------------------------------------------------- FUNCION VER UN PEDIDO ESPECIFICO DEL USUARIO
-    public function ver($params = []){
+    public function ver($params = [])
+    {
         try {
             $id_pedido = $params['id_pedido'] ?? $_GET['id_pedido'] ?? null;
             if (!$id_pedido) throw new Exception("Pedido no especificado.");
@@ -216,53 +239,54 @@ class PedidoControlador{
         }
     }
 
-    
+
     //-----------------------------------------------------------------------   FUNCION ENPOINT VER TODOS LOS PEDIDOS DEL USUARIO LLAMDA DESDE ROUTERAJAX
-    public function historial(){
-    try {
-        $id_usuario = $_SESSION['usuario']['id'] ?? null;
-        if (!$id_usuario) {
-            throw new Exception("Usuario no especificado o no logueado.");
+    public function historial()
+    {
+        try {
+            $id_usuario = $_SESSION['usuario']['id'] ?? null;
+            if (!$id_usuario) {
+                throw new Exception("Usuario no especificado o no logueado.");
+            }
+
+            $pedidos = $this->pedidoModel->obtenerHistorialPedidos($id_usuario);
+
+            if ($pedidos === false) {
+                throw new Exception("Error al obtener el historial de pedidos.");
+            }
+
+            // Cargar la vista del historial
+            require_once __DIR__ . "/../vistas/pedidos/historial.php";
+        } catch (Exception $e) {
+            http_response_code(500);
+            echo "<p>Error al mostrar histórico de pedidos: " . htmlspecialchars($e->getMessage()) . "</p>";
+            error_log("PedidoControlador::historial - " . $e->getMessage());
         }
+    }
 
-        $pedidos = $this->pedidoModel->obtenerHistorialPedidos($id_usuario);
+    //-----------------------------------------------------------------------   FUNCION ENPOINT DETALLE DE UN PEDIDO DEL HISTORIAL DEL USUARIO ROUTERAJAX
+    public function historialDetalle()
+    {
+        try {
+            $id_pedido = $_GET['id_pedido'] ?? null;
+            if (!$id_pedido) {
+                http_response_code(400);
+                echo "<p>Pedido no especificado.</p>";
+                return;
+            }
 
-        if ($pedidos === false) {
-            throw new Exception("Error al obtener el historial de pedidos.");
+            $detalles = $this->pedidoModel->obtenerDetallesPorPedido($id_pedido);
+
+            if ($detalles === false) {
+                throw new Exception("No se pudieron obtener los detalles del pedido.");
+            }
+
+            // Cargar la vista del detalle del pedido
+            require_once __DIR__ . '/../vistas/pedidos/detallePedido.php';
+        } catch (Exception $e) {
+            http_response_code(500);
+            echo "<p>Error al mostrar el detalle del pedido: " . htmlspecialchars($e->getMessage()) . "</p>";
+            error_log("PedidoControlador::historialDetalle - " . $e->getMessage());
         }
-
-        // Cargar la vista del historial
-        require_once __DIR__ . "/../vistas/pedidos/historial.php";
-    } catch (Exception $e) {
-        http_response_code(500);
-        echo "<p>Error al mostrar histórico de pedidos: " . htmlspecialchars($e->getMessage()) . "</p>";
-        error_log("PedidoControlador::historial - " . $e->getMessage());
     }
 }
-
-//-----------------------------------------------------------------------   FUNCION ENPOINT DETALLE DE UN PEDIDO DEL HISTORIAL DEL USUARIO ROUTERAJAX
-public function historialDetalle() {
-    try {
-        $id_pedido = $_GET['id_pedido'] ?? null;
-        if (!$id_pedido) {
-            http_response_code(400);
-            echo "<p>Pedido no especificado.</p>";
-            return;
-        }
-
-        $detalles = $this->pedidoModel->obtenerDetallesPorPedido($id_pedido);
-
-        if ($detalles === false) {
-            throw new Exception("No se pudieron obtener los detalles del pedido.");
-        }
-
-        // Cargar la vista del detalle del pedido
-        require_once __DIR__ . '/../vistas/pedidos/detallePedido.php';
-    } catch (Exception $e) {
-        http_response_code(500);
-        echo "<p>Error al mostrar el detalle del pedido: " . htmlspecialchars($e->getMessage()) . "</p>";
-        error_log("PedidoControlador::historialDetalle - " . $e->getMessage());
-    }
- }
-}
-?>

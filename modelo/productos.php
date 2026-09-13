@@ -1,15 +1,18 @@
 <?php
 require_once __DIR__ . '/../configuracion/conexion_bd.php';
 
-class Productos {
+class Productos
+{
     private mysqli $conn;
 
-   public function __construct() {
+    public function __construct()
+    {
         $this->conn = Conexion::getConexion(); // Singleton
     }
 
     //------------------------------------------------------------------------------- FUNCION PARA OBTENER LISTADO DE PRODUCTOS SEGUN LA CATEGORIA
-    public function obtenerProductoCategoria($categoria) {
+    public function obtenerProductoCategoria($categoria)
+    {
 
         $sql = "SELECT * FROM productos WHERE categoria = ?";
         $stmt = $this->conn->prepare($sql);
@@ -36,7 +39,8 @@ class Productos {
 
 
     //------------------------------------------------------------------- FUNCION PARA OBTENER LISTADO DE PRODUCTOS POR ID JOIN CON TABLA TALLAS y PRODUCTOS TALLAS
-    function obtenerProductoPorId($id_producto) {
+    function obtenerProductoPorId($id_producto)
+    {
 
         $sql = "SELECT p.id_producto, p.nombre_producto, p.precio, p.categoria, p.descripcion,
                p.imagen_url, pt.id_productostalla, t.id_talla, t.talla, pt.stock
@@ -53,27 +57,27 @@ class Productos {
         $producto = null;
         $tallas = [];
 
-      while ($row = $result->fetch_assoc()) {
-    if (!$producto) {
-        $producto = [
-            'id_producto'     => $row['id_producto'],
-            'nombre_producto' => $row['nombre_producto'],
-            'descripcion'     => $row['descripcion'],
-            'precio'          => $row['precio'],
-            'categoria'       => $row['categoria'],
-            'imagen_url'      => $row['imagen_url']
-        ];
-    }
+        while ($row = $result->fetch_assoc()) {
+            if (!$producto) {
+                $producto = [
+                    'id_producto'     => $row['id_producto'],
+                    'nombre_producto' => $row['nombre_producto'],
+                    'descripcion'     => $row['descripcion'],
+                    'precio'          => $row['precio'],
+                    'categoria'       => $row['categoria'],
+                    'imagen_url'      => $row['imagen_url']
+                ];
+            }
 
-    if (!empty($row['id_talla'])) { // solo si existe talla
-        $tallas[] = [
-            'id_productostalla' => $row['id_productostalla'],
-            'id_talla'          => $row['id_talla'],
-            'talla'             => $row['talla'],
-            'stock'             => $row['stock'],
-        ];
-    }
-}
+            if (!empty($row['id_talla'])) { // solo si existe talla
+                $tallas[] = [
+                    'id_productostalla' => $row['id_productostalla'],
+                    'id_talla'          => $row['id_talla'],
+                    'talla'             => $row['talla'],
+                    'stock'             => $row['stock'],
+                ];
+            }
+        }
 
         $producto['tallas'] = $tallas;
         $stmt->close();
@@ -83,8 +87,9 @@ class Productos {
 
 
     //-------------------------------------------------------------------------------------- FUNCION PARA OBTENER PRODUCTOS NOVEDADES POR CATEGORIA
-    public function obtenerNovedadesPorCategoria($categoria, $limite = 8) {
-        
+    public function obtenerNovedadesPorCategoria($categoria, $limite = 8)
+    {
+
         // Selecciona los últimos productos añadidos según el ID más alto y filtrando por categoría
         $sql = "SELECT * FROM productos WHERE categoria = ? ORDER BY id_producto DESC LIMIT ?";
 
@@ -115,5 +120,64 @@ class Productos {
         $stmt->close();
         return $productos;
     }
+
+    public function obtenerStockPorProductostalla($id_productostalla)
+    {
+        $sql = "SELECT stock FROM productos_talla WHERE id_productostalla = ? LIMIT 1";
+        $stmt = $this->conn->prepare($sql);
+
+        if (!$stmt) {
+            throw new Exception("Error en prepare (obtenerStockPorProductostalla): " . $this->conn->error);
+        }
+
+        $stmt->bind_param("i", $id_productostalla);
+        $stmt->execute();
+
+        $resultado = $stmt->get_result();
+        $fila = $resultado->fetch_assoc();
+        $stmt->close();
+
+        return $fila['stock'] ?? 0;
+    }
+
+    public function validarStockDisponible($id_productostalla, $cantidadSolicitada)
+    {
+        $cantidadSolicitada = (int)$cantidadSolicitada;
+        $stockActual = $this->obtenerStockPorProductostalla($id_productostalla);
+
+        if ($cantidadSolicitada < 1) {
+            throw new Exception("La cantidad debe ser mayor que cero.");
+        }
+
+        if ($stockActual < $cantidadSolicitada) {
+            throw new Exception("No hay suficiente stock para este producto. Disponible: " . $stockActual . ".");
+        }
+
+        return true;
+    }
+
+    public function restarStock($id_productostalla, $cantidad)
+    {
+        $cantidad = (int)$cantidad;
+        $stockActual = $this->obtenerStockPorProductostalla($id_productostalla);
+
+        if ($stockActual < $cantidad) {
+            throw new Exception("No hay suficiente stock para este producto.");
+        }
+
+        $sql = "UPDATE productos_talla SET stock = stock - ? WHERE id_productostalla = ?";
+        $stmt = $this->conn->prepare($sql);
+
+        if (!$stmt) {
+            throw new Exception("Error en prepare (restarStock): " . $this->conn->error);
+        }
+
+        $stmt->bind_param("ii", $cantidad, $id_productostalla);
+        if (!$stmt->execute()) {
+            throw new Exception("Error al actualizar stock: " . $stmt->error);
+        }
+
+        $stmt->close();
+        return true;
+    }
 }
-?>

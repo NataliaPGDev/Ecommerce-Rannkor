@@ -1,7 +1,8 @@
 <?php
 require_once __DIR__ . '/../configuracion/conexion_bd.php';
 
-class Pedido {
+class Pedido
+{
 
     private mysqli $conn;
 
@@ -13,7 +14,8 @@ class Pedido {
     /* ============================================================
        1. CREAR PEDIDO
     ============================================================ */
-    public function crearPedido($id_usuario, $id_direccion, $metodo_pago, $tipo_envio, $gastos_envio, $total) {
+    public function crearPedido($id_usuario, $id_direccion, $metodo_pago, $tipo_envio, $gastos_envio, $total)
+    {
 
         // Generar código único para el pedido
         $codigo = 'PED-' . strtoupper(uniqid());
@@ -74,7 +76,8 @@ class Pedido {
     /* ============================================================
        2. INSERTAR DETALLE EN LA TABLA PEDIDOS_DETALLE
     ============================================================ */
-    public function insertarDetalle($id_pedido, $id_producto, $talla, $cantidad, $precio_unitario) {
+    public function insertarDetalle($id_pedido, $id_producto, $talla, $cantidad, $precio_unitario)
+    {
 
         $stmt = $this->conn->prepare(
             "INSERT INTO pedidos_detalle (id_pedido, id_producto, talla, cantidad, precio_unitario)
@@ -97,9 +100,10 @@ class Pedido {
     /* ============================================================
        3. OBTENER UN PEDIDO
     ============================================================ */
-   public function obtenerPedidoCompleto($id_pedido) {
+    public function obtenerPedidoCompleto($id_pedido)
+    {
 
-    $sql = "SELECT 
+        $sql = "SELECT 
                 p.*,
                 u.nombre,
                 u.apellidos,
@@ -117,25 +121,26 @@ class Pedido {
             JOIN direccion d ON p.id_direccion = d.id_direccion
             WHERE p.id_pedido = ?";
 
-    $stmt = $this->conn->prepare($sql);
-    if (!$stmt) throw new Exception("Error al preparar consulta: " . $this->conn->error);
+        $stmt = $this->conn->prepare($sql);
+        if (!$stmt) throw new Exception("Error al preparar consulta: " . $this->conn->error);
 
-    $stmt->bind_param("i", $id_pedido);
-    $stmt->execute();
+        $stmt->bind_param("i", $id_pedido);
+        $stmt->execute();
 
-    $result = $stmt->get_result();
-    $pedido = $result->fetch_assoc();
+        $result = $stmt->get_result();
+        $pedido = $result->fetch_assoc();
 
-    $stmt->close();
-    return $pedido;
-}
+        $stmt->close();
+        return $pedido;
+    }
 
 
     /* ============================================================
        3. OBTENER LOS DETALLES DE UN PEDIDO
     ============================================================ */
-    public function obtenerDetallesPorPedido($id_pedido) {
-    $sql = "SELECT 
+    public function obtenerDetallesPorPedido($id_pedido)
+    {
+        $sql = "SELECT 
                 pd.id_producto,
                 pd.talla,
                 pd.cantidad,
@@ -146,25 +151,26 @@ class Pedido {
             JOIN productos p ON pd.id_producto = p.id_producto
             WHERE pd.id_pedido = ?";
 
-    $stmt = $this->conn->prepare($sql);
-    if (!$stmt) throw new Exception("Error al preparar detalles: " . $this->conn->error);
+        $stmt = $this->conn->prepare($sql);
+        if (!$stmt) throw new Exception("Error al preparar detalles: " . $this->conn->error);
 
-    $stmt->bind_param("i", $id_pedido);
-    $stmt->execute();
+        $stmt->bind_param("i", $id_pedido);
+        $stmt->execute();
 
-    $result = $stmt->get_result();
-    $detalles = $result->fetch_all(MYSQLI_ASSOC);
+        $result = $stmt->get_result();
+        $detalles = $result->fetch_all(MYSQLI_ASSOC);
 
-    $stmt->close();
-    return $detalles;
-}
+        $stmt->close();
+        return $detalles;
+    }
 
 
     /* ============================================================
        4. OBTENER TODOS LOS PEDIDOS DE UN USUARIO
     ============================================================ */
-    public function obtenerHistorialPedidos($id_usuario) {
-        
+    public function obtenerHistorialPedidos($id_usuario)
+    {
+
         $sql = "SELECT * FROM pedidos WHERE id_usuario = ? ORDER BY fecha_pedido DESC";
 
         $stmt = $this->conn->prepare($sql);
@@ -179,5 +185,53 @@ class Pedido {
         $stmt->close();
         return $pedidos;
     }
+
+    public function validarStockParaPedido($id_productostalla, $cantidadSolicitada)
+    {
+        $sql = "SELECT stock FROM productos_talla WHERE id_productostalla = ? LIMIT 1";
+        $stmt = $this->conn->prepare($sql);
+
+        if (!$stmt) {
+            throw new Exception("Error en prepare (validarStockParaPedido): " . $this->conn->error);
+        }
+
+        $stmt->bind_param("i", $id_productostalla);
+        $stmt->execute();
+
+        $resultado = $stmt->get_result();
+        $fila = $resultado->fetch_assoc();
+        $stmt->close();
+
+        $stockActual = (int)($fila['stock'] ?? 0);
+
+        if ($cantidadSolicitada < 1) {
+            throw new Exception("La cantidad debe ser mayor que cero.");
+        }
+
+        if ($stockActual < $cantidadSolicitada) {
+            throw new Exception("No hay suficiente stock para uno de los productos del carrito.");
+        }
+
+        return true;
+    }
+
+    public function descontarStockProducto($id_productostalla, $cantidad)
+    {
+        $cantidad = (int)$cantidad;
+
+        $sql = "UPDATE productos_talla SET stock = stock - ? WHERE id_productostalla = ?";
+        $stmt = $this->conn->prepare($sql);
+
+        if (!$stmt) {
+            throw new Exception("Error en prepare (descontarStockProducto): " . $this->conn->error);
+        }
+
+        $stmt->bind_param("ii", $cantidad, $id_productostalla);
+        if (!$stmt->execute()) {
+            throw new Exception("Error al descontar stock: " . $stmt->error);
+        }
+
+        $stmt->close();
+        return true;
+    }
 }
-?>

@@ -4,9 +4,16 @@ require_once __DIR__ . '/middleware.php';
 
 
 // 1. Controlador y acción desde GET
-$controller = $_GET['controller'] ?? 'home';
-$action     = $_GET['action'] ?? 'index';
+$controller = strtolower($_GET['controller'] ?? 'home');
+$action     = strtolower($_GET['action'] ?? 'index');
 
+// Compatibilidad de rutas: normaliza nombres antiguos
+if ($controller === 'producto') {
+    $controller = 'productos';
+}
+if ($action === 'listar') {
+    $action = 'listarCategoria';
+}
 
 // 2. Archivo y clase del controlador
 $controllerClass = ucfirst($controller) . "Controlador";
@@ -31,9 +38,9 @@ if ($controller === 'admin') {
 
 
 // 4. Parámetros
-$params = ($_SERVER['REQUEST_METHOD'] === 'POST') 
-          ? array_merge($_GET, $_POST)  // Para formularios POST
-          : $_GET;                      // Para enlaces normales
+$params = ($_SERVER['REQUEST_METHOD'] === 'POST')
+    ? array_merge($_GET, $_POST)  // Para formularios POST
+    : $_GET;                      // Para enlaces normales
 
 
 // 5. Ejecutar acción
@@ -46,4 +53,3 @@ try {
 } catch (Exception $e) {
     echo "<h1>Error</h1><p>" . htmlspecialchars($e->getMessage()) . "</p>";
 }
-?>
