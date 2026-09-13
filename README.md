@@ -1,98 +1,82 @@
 # Tienda de Zapatillas
 
+<p align="center">
+  <img src="https://img.shields.io/badge/PHP-8%2B-777BB4?style=for-the-badge&logo=php" alt="PHP 8+" />
+  <img src="https://img.shields.io/badge/MySQL-Database-4479A1?style=for-the-badge&logo=mysql" alt="MySQL" />
+  <img src="https://img.shields.io/badge/Status-Project%20Demo-28a745?style=for-the-badge" alt="Status" />
+</p>
+
 ## Descripción
 
-Esta aplicación es una tienda online de calzado desarrollada en PHP con una arquitectura MVC simple. Permite a los usuarios navegar por productos, filtrarlos por categoría, ver detalles de cada artículo, gestionar un carrito de compra, completar un proceso de checkout y consultar el historial de pedidos.
+Tienda online de calzado desarrollada en PHP con una estructura MVC sencilla. Permite a los usuarios explorar productos, filtrar por categoría, ver detalles, gestionar un carrito de compra, completar el checkout y consultar el historial de pedidos.
 
-La plataforma también incluye un panel de administración para gestionar usuarios y productos, con operaciones de listado, inserción, actualización y eliminación.
+La aplicación también incluye un panel administrativo para gestionar usuarios, productos y pedidos.
 
 ## Objetivo
 
-Crear una experiencia de compra completa para clientes que quieran explorar zapatillas por categoría, consultar información de cada producto, comprar con un proceso seguro y gestionar su cuenta desde una interfaz sencilla.
+Crear una experiencia de compra completa para usuarios que quieran navegar por catálogo, consultar detalles del producto, comprar con un flujo claro y gestionar su cuenta de forma sencilla.
 
-## Funcionalidades principales
+## Funcionalidades
 
-### Frontend y experiencia de usuario
+- Catálogo de productos por categoría
+- Vista detallada del producto
+- Carrito de compra con actualización de cantidades
+- Proceso de checkout
+- Historial de pedidos
+- Perfil del usuario
+- Sistema de autenticación y roles
+- Panel administrativo para gestión de productos y usuarios
 
-- Catálogo de productos por categoría: hombre, mujer y otros tipos disponibles.
-- Páginas de inicio con novedades destacadas.
-- Detalle del producto con información, imagen y tallas disponibles.
-- Carrito de compra con actualización de cantidades y cálculo de subtotal.
-- Proceso de compra con formulario de envío y selección de método de pago.
-- Historial de pedidos del usuario.
-- Perfil de usuario con datos personales y dirección.
-
-### Autenticación y autorización
-
-- Registro e inicio de sesión de usuarios.
-- Protección de rutas según sesión activa.
-- Control de acceso para usuarios normales y administradores.
-- Expiración automática de sesión por inactividad.
-
-### Administración
-
-- Dashboard administrativo.
-- Gestión de usuarios.
-- Gestión de productos y tallas.
-- Consulta de pedidos y administración de stock y catálogo.
-
-## Tecnologías utilizadas
+## Tecnologías
 
 - PHP 8+
 - MySQL / MariaDB
+- HTML5
+- CSS3
+- JavaScript
 - MVC básico en PHP
-- HTML5, CSS3, JavaScript
-- Sesiones de usuario
-- AJAX / Fetch para operaciones dinámicas del carrito y panel administrativo
+- Sesiones y control de acceso
 
 ## Estructura del proyecto
 
 ```text
 /
-├── api/                    # Endpoints AJAX o servicios
-├── componentes/            # Header, footer y datos reutilizables
-├── configuracion/          # Configuración general de la app y conexión a BD
-├── controladores/          # Lógica de negocio según cada módulo
-├── modelo/                 # Modelos para usuarios, productos, carrito, pedidos y admin
+├── api/                    # Servicios AJAX
+├── componentes/            # Header, footer y bloques reutilizables
+├── configuracion/          # Configuración y conexión a la BD
+├── controladores/          # Lógica por módulo
+├── modelo/                 # Entidades y acceso a datos
 ├── recursos/               # CSS, JS, imágenes e iconos
-├── vistas/                 # Vistas HTML/PHP por sección
-├── index.php               # Entrada principal de la app
-├── router.php              # Enrutamiento del sitio web
-├── routeradmin.php         # Enrutamiento del panel administrativo
+├── vistas/                 # Vistas del frontend y admin
+├── index.php               # Entrada principal
+├── router.php              # Enrutado del sitio
+├── routeradmin.php         # Enrutado del panel admin
 ├── middleware.php          # Validación de sesión y permisos
-├── README.md               # Documentación del proyecto
-└── .sql                    # Script de base de datos (si se añade en el futuro)
+├── README.md               # Documentación
+└── .sql                    # Script de base de datos (si aplica)
 ```
 
 ## Requisitos previos
 
 - PHP 8 o superior
-- Servidor web local (Apache o XAMPP/WAMP/MAMP)
+- Servidor local (Apache, XAMPP, WAMP o MAMP)
 - MySQL o MariaDB
-- Navegador web moderno
+- Navegador moderno
 
 ## Instalación
 
 1. Clona o descarga este repositorio.
-2. Colócalo en la carpeta pública de tu servidor local.
-3. Crea la base de datos MySQL con el esquema correspondiente.
-4. Ajusta los datos de conexión en el archivo de configuración:
-   - configuracion/config.php
-   - configuracion/conexion_bd.php
-5. Inicia el proyecto desde tu servidor y accede a:
-   - http://localhost/tiendazapatillas
+2. Colócalo dentro de la carpeta pública de tu servidor.
+3. Descarga el archivo rannkor.sql y crea la base de datos MySQL.
+4. Ajusta los datos de conexión en:
+   - `configuracion/config.php`
+   - `configuracion/conexion_bd.php`
+5. Inicia el proyecto y accede en:
+   - `http://localhost/tiendazapatillas`
 
 ## Configuración de la base de datos
 
-El proyecto usa credenciales configuradas en la aplicación para conectarse a la base de datos. Debes modificar los valores de:
-
-- host
-- usuario
-- contraseña
-- nombre de la base de datos
-- puerto
-
-Ejemplo:
+Modifica estos valores con tus credenciales locales:
 
 ```php
 define('DB_HOST', 'localhost');
@@ -102,90 +86,60 @@ define('DB_NAME', 'tu_base_datos');
 define('DB_PORT', 3306);
 ```
 
+## Datos de acceso
+
+| Rol           | Email             | Contraseña |
+| ------------- | ----------------- | ---------- |
+| Cliente       | cliente1@gmail.com | cliente123# |
+| Administrador | admin@gmail.com   | admin123#  |
+
 ## Roles de usuario
 
 ### Usuario estándar
 
 - Ver catálogo
-- Agregar productos al carrito
-- Realizar compra
-- Ver historial de pedidos
-- Actualizar datos personales y dirección
+- Añadir productos al carrito
+- Realizar compras
+- Consultar historial de pedidos
+- Modificar datos personales
 
 ### Administrador
 
 - Acceder al dashboard
-- Ver y gestionar usuarios
-- Crear, editar y eliminar productos
-- Gestionar tallas y stock asociado
+- Gestionar usuarios
+- Crear, editar y borrar productos
+- Gestionar tallas y stock
+- Consultar pedidos
 
-## Flujo principal de la aplicación
+## Flujo principal
 
-1. El usuario entra a la landing page o catálogo.
-2. Explora productos o entra a la categoría deseada.
-3. Consulta el detalle del producto y selecciona talla.
-4. Agrega productos al carrito.
-5. Revisa el carrito y procede al checkout.
-6. Completa la información de envío y pago.
-7. Se genera un pedido y se almacena en la base de datos.
-8. El usuario puede consultar su historial y detalles del pedido.
-
-## Módulos principales
-
-### Home
-
-- Página de inicio con novedades y productos destacados.
-
-### Productos
-
-- Listado por categoría.
-- Vista detallada del producto.
-
-### Carrito
-
-- Agregar productos.
-- Ajustar cantidades.
-- Eliminar artículos.
-- Vaciar carrito.
-- Calcular subtotal.
-
-### Pedidos
-
-- Checkout.
-- Generación de pedido.
-- Ver pedido individual.
-- Historial de compras.
-
-### Usuario
-
-- Perfil.
-- Visualización de datos personales.
-- Gestión básica de información del cliente.
-
-### Panel Administración
-
-- Dashboard.
-- CRUD de usuarios y productos.
-- Administración de tallas por producto.
+1. El usuario entra al catálogo.
+2. Explora productos y categorías.
+3. Consulta detalles y selecciona talla.
+4. Añade artículos al carrito.
+5. Revisa pedido y continúa al checkout.
+6. Completa envío y pago.
+7. Se genera el pedido y se guarda en la base de datos.
+8. Puede consultar el historial y el detalle del pedido.
 
 ## Seguridad
 
-La aplicación implementa controles básicos de seguridad, como:
+La aplicación incluye controles básicos como:
 
-- Validación de sesión para zonas restringidas.
-- Middleware para redirección en caso de acceso no autorizado.
-- Verificación de rol para usuarios administradores.
-- Manejo de errores y excepciones para evitar fallos visibles.
+- Validación de sesión
+- Middleware para rutas restringidas
+- Verificación de roles
+- Redirección en accesos no autorizados
 
-## Posibles mejoras futuras
+## Mejoras futuras
 
-- Integración de pasarela de pago real.
-- Panel administrativo más completo con gráficos y estadísticas.
-- Filtros avanzados por marca, precio y talla.
-- Sistema de valoraciones y comentarios de productos.
-- Mejoras en diseño responsivo y experiencia móvil.
-- Implementación de tests automatizados.
+- Integración de pasarela de pago real
+- Dashboard administrativo más completo
+- Filtros avanzados por precio y talla
+- Sistema de reseñas
+- Mejoras de diseño responsive
+- Tests automatizados
 
 ## Autoría
 
-Proyecto desarrollado dentro de marco educativo FP Daw.
+Proyecto desarrollado dentro del marco educativo FP Daw.
