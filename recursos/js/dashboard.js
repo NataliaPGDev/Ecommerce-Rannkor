@@ -1,4 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
+  const content = document.getElementById("content");
+  if (!content) return;
+
   initSidebar();
   loadDefaultView();
 });
@@ -44,6 +47,9 @@ function loadView(view) {
 
 /** ====== VISTA POR DEFECTO ====== */
 function loadDefaultView() {
+  const content = document.getElementById("content");
+  if (!content) return;
+
   loadView("usuarios").then(() => {
     if (typeof initUsuariosView === "function") initUsuariosView();
   });

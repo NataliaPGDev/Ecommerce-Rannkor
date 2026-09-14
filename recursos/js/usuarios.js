@@ -1,8 +1,29 @@
 /** ====== VARIABLES GLOBALES DE LA VISTA ====== */
 let usuariosData = []; // Guarda los datos de los usuarios cargados
 
+const REDIRECT_LOGIN_KEY = "rannkor_redirect_to_login";
+
+function redirectToLoginOnce() {
+  const currentUrl = window.location.href;
+  if (/controller=auth|action=login/i.test(currentUrl)) {
+    sessionStorage.removeItem(REDIRECT_LOGIN_KEY);
+    return false;
+  }
+
+  if (sessionStorage.getItem(REDIRECT_LOGIN_KEY) === "1") {
+    return false;
+  }
+
+  sessionStorage.setItem(REDIRECT_LOGIN_KEY, "1");
+  window.location.href = "index.php?controller=auth&action=login";
+  return true;
+}
+
 /** ====== INICIALIZACIÓN DE LA VISTA ====== */
 function initUsuariosView() {
+  const tablaUsuarios = document.querySelector("#tablaUsuarios");
+  if (!tablaUsuarios) return;
+
   cargarUsuarios(); // Cargar tabla
   initModales(); // Inicializar modales
   initDelegacion(); // Inicializar delegación de eventos
@@ -74,11 +95,16 @@ function cerrarModalEditarUsuario() {
 
 /** ====== CARGAR USUARIOS ====== */
 function cargarUsuarios() {
+  const isLoginPage = /controller=auth|action=login/i.test(
+    window.location.search || window.location.href,
+  );
+  if (isLoginPage) return;
+
   fetch(appUrl("routeradmin.php?accion=listarUsuarios"))
     .then((res) => {
       if (!res.ok) {
         if (res.status === 403 || res.status === 401) {
-          window.location.href = "index.php?controller=auth&action=login";
+          redirectToLoginOnce();
           return null;
         }
 
@@ -99,7 +125,7 @@ function cargarUsuarios() {
       usuariosData = data;
       if (!Array.isArray(usuariosData)) {
         console.error("Error al obtener usuarios:", usuariosData);
-        window.location.href = "index.php?controller=auth&action=login";
+        redirectToLoginOnce();
         return;
       }
       const tbody = document.querySelector("#tablaUsuarios tbody");
@@ -132,7 +158,7 @@ function cargarUsuarios() {
         err.message &&
         /403|401|No autorizado|Error HTTP/.test(err.message)
       ) {
-        window.location.href = "index.php?controller=auth&action=login";
+        redirectToLoginOnce();
         return;
       }
       alert("Error al cargar usuarios: " + err.message);

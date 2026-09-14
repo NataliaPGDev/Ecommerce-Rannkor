@@ -15,12 +15,18 @@ final class Middleware
         return $rol !== null && (int)$rol === 1;
     }
 
+    public static function esUsuarioLogueado(): bool
+    {
+        return isset($_SESSION['usuario']) && is_array($_SESSION['usuario']);
+    }
+
     /**
      * --------------------------------------------------------------------------------  Verifica sesión para páginas vistas del router principal
+     * Cualquier usuario logueado puede acceder a esta zona (cliente o admin).
      */
     public static function verificarSesionWeb(): void
     {
-        if (!isset($_SESSION['usuario'])) {
+        if (!self::esUsuarioLogueado()) {
             $_SESSION['error'] = "Debes iniciar sesión";
             header("Location: index.php?controller=auth&action=login");
             exit();
@@ -67,11 +73,12 @@ final class Middleware
 
     /**
      * ------------------------------------------------------------ Verifica si el usuario es admin en router principal
-     * Funciona para páginas web
+     * Solo el rol administrador puede entrar aquí.
+     * Un admin sí puede seguir navegando por la zona de usuario; solo se restringe la zona admin.
      */
     public static function verificarAdminWeb(): void
     {
-        if (!isset($_SESSION['usuario']) || !self::esAdmin()) {
+        if (!self::esUsuarioLogueado() || !self::esAdmin()) {
             $_SESSION['error'] = "Acceso denegado";
             header("Location: index.php?controller=auth&action=login");
             exit();
