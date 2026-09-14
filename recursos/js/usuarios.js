@@ -77,6 +77,11 @@ function cargarUsuarios() {
   fetch(appUrl("routeradmin.php?accion=listarUsuarios"))
     .then((res) => {
       if (!res.ok) {
+        if (res.status === 403 || res.status === 401) {
+          window.location.href = "index.php?controller=auth&action=login";
+          return null;
+        }
+
         return res
           .json()
           .then((error) => {
@@ -89,12 +94,12 @@ function cargarUsuarios() {
       return res.json();
     })
     .then((data) => {
+      if (!data) return;
+
       usuariosData = data;
       if (!Array.isArray(usuariosData)) {
         console.error("Error al obtener usuarios:", usuariosData);
-        alert(
-          "No se pudieron cargar los usuarios. Revisa la sesión de administrador.",
-        );
+        window.location.href = "index.php?controller=auth&action=login";
         return;
       }
       const tbody = document.querySelector("#tablaUsuarios tbody");
@@ -122,6 +127,14 @@ function cargarUsuarios() {
     })
     .catch((err) => {
       console.error("Error al cargar usuarios:", err);
+      if (
+        err &&
+        err.message &&
+        /403|401|No autorizado|Error HTTP/.test(err.message)
+      ) {
+        window.location.href = "index.php?controller=auth&action=login";
+        return;
+      }
       alert("Error al cargar usuarios: " + err.message);
     });
 }
