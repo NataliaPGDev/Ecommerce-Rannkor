@@ -2,16 +2,19 @@
 require_once __DIR__ . '/../modelo/admin.php';
 
 
-class AdminControlador {
+class AdminControlador
+{
     private Admin $adminModelo;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->adminModelo = new Admin();
     }
 
 
     // FUNCIÓN PARA IR A VISTA DASHBOARD
-    public function dashboard(){
+    public function dashboard()
+    {
         require_once __DIR__ . '/../vistas/admin/dashboard.php';
     }
 
@@ -20,13 +23,15 @@ class AdminControlador {
        FUNCIONES ENDPOINT PARA LA GESTION DE USUARIOS
     ===================================================== */
 
-    public function listarUsuarios(){
+    public function listarUsuarios()
+    {
         $usuarios = $this->adminModelo->obtenerUsuarios();
         echo json_encode($usuarios);
     }
 
     //--------------------------------------------------------------------INSERTAR USUARIO
-    public function insertarUsuario(){
+    public function insertarUsuario()
+    {
         $input = json_decode(file_get_contents('php://input'), true);
 
         try {
@@ -52,7 +57,8 @@ class AdminControlador {
 
     //------------------------------------------------------------------- ACTUALIZAR USUARIO
 
-    public function actualizarUsuario(){
+    public function actualizarUsuario()
+    {
         $id_usuario = $_GET['id'] ?? null;
 
         // Leemos los datos enviados desde el frontend (JSON)
@@ -89,7 +95,8 @@ class AdminControlador {
 
     //------------------------------------------------------------------- ELIMINAR USUARIO
 
-    public function eliminarUsuario($id_usuario){
+    public function eliminarUsuario($id_usuario)
+    {
 
         if (empty($id_usuario)) {
             echo json_encode(["error" => true, "mensaje" => "ID no recibido"]);
@@ -106,7 +113,8 @@ class AdminControlador {
 
 
     //--------------------------------------------------------------------- LISTAR PRODUCTOS
-    public function listarProductos(){
+    public function listarProductos()
+    {
         try {
             $productos = $this->adminModelo->listarProductos();
 
@@ -124,12 +132,12 @@ class AdminControlador {
 
 
     //---------------------------------------------------------------------- INSERTAR PRODUCTOS
-    public function insertarProducto(){
-        // Leer datos desde el body JSON
-        $input = json_decode(file_get_contents('php://input'), true);
+    public function insertarProducto()
+    {
+        $input = $_POST;
+        $archivo = $_FILES['imagen'] ?? null;
 
-        // Validación mínima en el controlador: verificar que haya datos
-        if (empty($input)) {
+        if (empty($input) && !$archivo) {
             echo json_encode([
                 "success" => false,
                 "message" => "No se recibieron datos para insertar."
@@ -138,7 +146,15 @@ class AdminControlador {
         }
 
         try {
-            // Llamada al modelo
+            if ($archivo && isset($archivo['tmp_name']) && is_uploaded_file($archivo['tmp_name'])) {
+                $input['imagen_url'] = $this->adminModelo->subirImagenProducto($archivo);
+            }
+
+            $tallasJson = $input['tallas'] ?? null;
+            if ($tallasJson) {
+                $input['tallas'] = json_decode($tallasJson, true);
+            }
+
             $id_producto = $this->adminModelo->insertarProducto($input);
 
             echo json_encode([
@@ -147,7 +163,6 @@ class AdminControlador {
                 "id_producto" => $id_producto
             ]);
         } catch (Exception $e) {
-            // El modelo ya lanza excepciones si algo no es válido
             echo json_encode([
                 "success" => false,
                 "message" => $e->getMessage()
@@ -157,8 +172,10 @@ class AdminControlador {
 
 
     //------------------------------------------------------------------------- ACTUALIZAR PRODUCTOS
-    public function actualizarProducto(){
-        $input = json_decode(file_get_contents('php://input'), true);
+    public function actualizarProducto()
+    {
+        $input = $_POST;
+        $archivo = $_FILES['imagen'] ?? null;
 
         $id_productostalla = $input['id_productostalla'] ?? null;
         $id_producto       = $input['id_producto'] ?? null;
@@ -170,11 +187,15 @@ class AdminControlador {
             ]);
             return;
         }
-        // Filtramos los campos que queremos enviar al modelo
+
         $data = $input;
-        unset($data['id_productostalla'], $data['id_producto']); // quitamos IDs del array de datos
+        unset($data['id_productostalla'], $data['id_producto']);
 
         try {
+            if ($archivo && isset($archivo['tmp_name']) && is_uploaded_file($archivo['tmp_name'])) {
+                $data['imagen_url'] = $this->adminModelo->subirImagenProducto($archivo);
+            }
+
             $this->adminModelo->actualizarProducto((int)$id_productostalla, (int)$id_producto, $data);
 
             echo json_encode([
@@ -190,40 +211,42 @@ class AdminControlador {
     }
 
     //-------------------------------------------------------------------------- INSERTAR TALLA PARA UN PRODUCTO
-    public function agregarTallasProducto(){
-    // Obtener datos enviados por fetch
-    $input = json_decode(file_get_contents('php://input'), true);
+    public function agregarTallasProducto()
+    {
+        // Obtener datos enviados por fetch
+        $input = json_decode(file_get_contents('php://input'), true);
 
-    // Validar que llegue id_producto y tallas
-    if (empty($input['id_producto']) || !is_array($input['tallas']) || empty($input['tallas'])) {
-        echo json_encode([
-            "success" => false,
-            "message" => "Faltan datos obligatorios: id_producto o tallas."
-        ]);
-        return;
+        // Validar que llegue id_producto y tallas
+        if (empty($input['id_producto']) || !is_array($input['tallas']) || empty($input['tallas'])) {
+            echo json_encode([
+                "success" => false,
+                "message" => "Faltan datos obligatorios: id_producto o tallas."
+            ]);
+            return;
+        }
+
+        $id_producto = (int)$input['id_producto'];
+        $tallas = $input['tallas'];
+
+        try {
+            $this->adminModelo->insertarProductoTalla($id_producto, $tallas);
+
+            echo json_encode([
+                "success" => true,
+                "message" => "Tallas agregadas correctamente."
+            ]);
+        } catch (Exception $e) {
+            echo json_encode([
+                "success" => false,
+                "message" => $e->getMessage()
+            ]);
+        }
     }
-
-    $id_producto = (int)$input['id_producto'];
-    $tallas = $input['tallas'];
-
-    try {
-        $this->adminModelo->insertarProductoTalla($id_producto, $tallas);
-
-        echo json_encode([
-            "success" => true,
-            "message" => "Tallas agregadas correctamente."
-        ]);
-    } catch (Exception $e) {
-        echo json_encode([
-            "success" => false,
-            "message" => $e->getMessage()
-        ]);
-    }
-}
 
 
     //--------------------------------------------------------------------------- ELIMINAR PRODUCTO
-    public function eliminarProducto(){
+    public function eliminarProducto()
+    {
         $input = json_decode(file_get_contents('php://input'), true);
         $id_productostalla = $input['id_productostalla'] ?? null;
         if (!$id_productostalla) {
@@ -249,4 +272,3 @@ class AdminControlador {
         }
     }
 }
-?>

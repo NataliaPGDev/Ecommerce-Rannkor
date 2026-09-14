@@ -1,25 +1,3 @@
-const APP_BASE = (() => {
-  const baseTag = document.querySelector("base");
-  if (baseTag && baseTag.getAttribute("href")) {
-    return new URL(
-      baseTag.getAttribute("href"),
-      window.location.href,
-    ).pathname.replace(/\/+$/, "");
-  }
-
-  const currentPath = window.location.pathname;
-  const basePath = currentPath.includes("index.php")
-    ? currentPath.substring(0, currentPath.lastIndexOf("/"))
-    : currentPath;
-
-  return basePath.replace(/\/+$/, "");
-})();
-
-function appUrl(path) {
-  const normalized = path.startsWith("/") ? path : `/${path}`;
-  return `${APP_BASE || ""}${normalized}`;
-}
-
 /** ====== VARIABLES GLOBALES DE LA VISTA ====== */
 let usuariosData = []; // Guarda los datos de los usuarios cargados
 
@@ -73,11 +51,26 @@ function cerrarModalEditarUsuario() {
 /** ====== CARGAR USUARIOS ====== */
 function cargarUsuarios() {
   fetch(appUrl("routeradmin.php?accion=listarUsuarios"))
-    .then((res) => res.json())
+    .then((res) => {
+      if (!res.ok) {
+        return res
+          .json()
+          .then((error) => {
+            throw new Error(error.error || "No autorizado");
+          })
+          .catch(() => {
+            throw new Error("Error HTTP " + res.status);
+          });
+      }
+      return res.json();
+    })
     .then((data) => {
       usuariosData = data;
       if (!Array.isArray(usuariosData)) {
         console.error("Error al obtener usuarios:", usuariosData);
+        alert(
+          "No se pudieron cargar los usuarios. Revisa la sesión de administrador.",
+        );
         return;
       }
       const tbody = document.querySelector("#tablaUsuarios tbody");
@@ -103,7 +96,10 @@ function cargarUsuarios() {
         tbody.appendChild(tr);
       });
     })
-    .catch((err) => alert("Error al cargar usuarios: " + err.message));
+    .catch((err) => {
+      console.error("Error al cargar usuarios:", err);
+      alert("Error al cargar usuarios: " + err.message);
+    });
 }
 
 /** ====== DELEGACIÓN DE EVENTOS ====== */

@@ -31,45 +31,59 @@
     <div class="modal-contenido">
         <h2>Crear nuevo producto</h2>
         <div class="modal-input">
-            <label>Nombre</label>
-            <input type="text" id="nombre">
+            <div class="modal-campo">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre">
+            </div>
 
-            <label>Descripción</label>
-            <input type="text" id="descripcion">
+            <div class="modal-campo">
+                <label for="descripcion">Descripción</label>
+                <input type="text" id="descripcion">
+            </div>
 
-            <label for="categoria">Categoría:</label>
-            <select id="categoria">
-                <option value="">Selecciona una categoría</option>
-                <option value="hombre">Hombre</option>
-                <option value="mujer">Mujer</option>
-            </select>
+            <div class="modal-campo">
+                <label for="categoria">Categoría</label>
+                <select id="categoria">
+                    <option value="">Selecciona una categoría</option>
+                    <option value="hombre">Hombre</option>
+                    <option value="mujer">Mujer</option>
+                </select>
+            </div>
 
-            <label>Precio</label>
-            <input type="number" id="precio" step="0.01" min="0">
+            <div class="modal-campo">
+                <label for="precio">Precio</label>
+                <input type="number" id="precio" step="0.01" min="0">
+            </div>
 
-            <label>Talla</label>
-            <select id="talla">
-                <option value="110">36</option>
-                <option value="111">37</option>
-                <option value="112">38</option>
-                <option value="113">39</option>
-                <option value="114">40</option>
-                <option value="115">41</option>
-                <option value="116">42</option>
-                <option value="117">43</option>
-                <option value="118">44</option>
-            </select>
+            <div class="modal-campo">
+                <label for="talla">Talla</label>
+                <select id="talla">
+                    <option value="110">36</option>
+                    <option value="111">37</option>
+                    <option value="112">38</option>
+                    <option value="113">39</option>
+                    <option value="114">40</option>
+                    <option value="115">41</option>
+                    <option value="116">42</option>
+                    <option value="117">43</option>
+                    <option value="118">44</option>
+                </select>
+            </div>
 
-            <label>Stock</label>
-            <input type="number" id="stock" min="0">
+            <div class="modal-campo">
+                <label for="stock">Stock</label>
+                <input type="number" id="stock" min="0">
+            </div>
 
-            <label>Imagen</label>
-            <input type="text" id="imagen">
+            <div class="modal-campo modal-campo--full">
+                <label for="imagen">Imagen</label>
+                <input type="file" id="imagen" accept="image/*">
+            </div>
         </div>
 
         <div class="modal-acciones">
-            <button onclick="crearProducto()">Guardar</button>
-            <button onclick="cerrarModalCrearProducto()">Cancelar</button>
+            <button class="btn-modal btn-modal--secondary" onclick="cerrarModalCrearProducto()">Cancelar</button>
+            <button class="btn-modal btn-modal--primary" onclick="crearProducto()">Guardar</button>
         </div>
     </div>
 </div>
@@ -77,80 +91,99 @@
 <!-- Modal Editar Producto -->
 <div id="modalEditarProducto" class="modal">
     <div class="modal-contenido">
-        <h2>Editar Producto</h2>
+        <h2>Editar producto</h2>
         <div class="modal-input">
             <input type="hidden" id="edit_id_producto">
             <input type="hidden" id="edit_id_productostalla" />
 
-            <label>Nombre</label>
-            <input type="text" id="edit_nombre">
+            <div class="modal-campo">
+                <label for="edit_nombre">Nombre</label>
+                <input type="text" id="edit_nombre">
+            </div>
 
-            <label>Descripción</label>
-            <input type="text" id="edit_descripcion">
+            <div class="modal-campo">
+                <label for="edit_descripcion">Descripción</label>
+                <input type="text" id="edit_descripcion">
+            </div>
 
-            <label for="edit_categoria">Categoría</label>
-            <select id="edit_categoria">
-                <option value="">Selecciona una categoria</option>
-                <option value="hombre">Hombre</option>
-                <option value="mujer">Mujer</option>
-            </select>
+            <div class="modal-campo">
+                <label for="edit_categoria">Categoría</label>
+                <select id="edit_categoria">
+                    <option value="">Selecciona una categoria</option>
+                    <option value="hombre">Hombre</option>
+                    <option value="mujer">Mujer</option>
+                </select>
+            </div>
 
-            <label>Precio</label>
-            <input type="number" id="edit_precio" step="0.01" min="0">
+            <div class="modal-campo">
+                <label for="edit_precio">Precio</label>
+                <input type="number" id="edit_precio" step="0.01" min="0">
+            </div>
 
-            <!-- Los valores del value de cada opcion deben ser cada id_talla correspondiente a la talla ---->
-            <label>Talla</label>
-            <select id="edit_talla" disabled>
-                <option value="110">36</option>
-                <option value="111">37</option>
-                <option value="112">38</option>
-                <option value="113">39</option>
-                <option value="114">40</option>
-                <option value="115">41</option>
-                <option value="116">42</option>
-                <option value="117">43</option>
-                <option value="118">44</option>
-            </select>
+            <div class="modal-campo">
+                <label for="edit_talla">Talla</label>
+                <select id="edit_talla" disabled>
+                    <option value="110">36</option>
+                    <option value="111">37</option>
+                    <option value="112">38</option>
+                    <option value="113">39</option>
+                    <option value="114">40</option>
+                    <option value="115">41</option>
+                    <option value="116">42</option>
+                    <option value="117">43</option>
+                    <option value="118">44</option>
+                </select>
+            </div>
 
-            <label>Stock</label>
-            <input type="number" id="edit_stock" min="0">
+            <div class="modal-campo">
+                <label for="edit_stock">Stock</label>
+                <input type="number" id="edit_stock" min="0">
+            </div>
 
-            <label>Imagen</label>
-            <input type="text" id="edit_imagen">
+            <div class="modal-campo modal-campo--full">
+                <label for="edit_imagen">Imagen nueva</label>
+                <input type="file" id="edit_imagen" accept="image/*">
+            </div>
         </div>
 
         <div class="modal-acciones">
-            <button onclick="guardarCambiosProducto()">Guardar cambios</button>
-            <button onclick="cerrarModalEditarProducto()">Cancelar</button>
+            <button class="btn-modal btn-modal--secondary" onclick="cerrarModalEditarProducto()">Cancelar</button>
+            <button class="btn-modal btn-modal--primary" onclick="guardarCambiosProducto()">Guardar cambios</button>
         </div>
     </div>
 </div>
 
 <!-- Modal Agregar Talla -->
 <div id="modalAgregarTalla" class="modal">
-    <div class="modal-contenido">
-        <h2>Agregar talla a producto</h2>
+    <div class="modal-contenido modal-contenido--compacto">
+        <h2>Agregar talla</h2>
         <div class="modal-input">
-        <input type="hidden" id="add_id_producto">
-        <label>Talla</label>
-        <select id="add_talla">
-            <option value="110">36</option>
-            <option value="111">37</option>
-            <option value="112">38</option>
-            <option value="113">39</option>
-            <option value="114">40</option>
-            <option value="115">41</option>
-            <option value="116">42</option>
-            <option value="117">43</option>
-            <option value="118">44</option>
-        </select>
-        <label>Stock</label>
-        <input type="number" id="add_stock" min="0">
+            <input type="hidden" id="add_id_producto">
+
+            <div class="modal-campo">
+                <label for="add_talla">Talla</label>
+                <select id="add_talla">
+                    <option value="110">36</option>
+                    <option value="111">37</option>
+                    <option value="112">38</option>
+                    <option value="113">39</option>
+                    <option value="114">40</option>
+                    <option value="115">41</option>
+                    <option value="116">42</option>
+                    <option value="117">43</option>
+                    <option value="118">44</option>
+                </select>
+            </div>
+
+            <div class="modal-campo">
+                <label for="add_stock">Stock</label>
+                <input type="number" id="add_stock" min="0">
+            </div>
         </div>
-        
+
         <div class="modal-acciones">
-            <button onclick="guardarTallaProducto()">Agregar</button>
-            <button onclick="cerrarModalAgregarTalla()">Cancelar</button>
+            <button class="btn-modal btn-modal--secondary" onclick="cerrarModalAgregarTalla()">Cancelar</button>
+            <button class="btn-modal btn-modal--primary" onclick="guardarTallaProducto()">Agregar</button>
         </div>
     </div>
 </div>

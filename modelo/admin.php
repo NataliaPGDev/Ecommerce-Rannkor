@@ -1,12 +1,14 @@
 <?php
 require_once __DIR__ . '/../configuracion/conexion_bd.php';
 
-class Admin {
+class Admin
+{
 
     private mysqli $conn;
     private const CATEGORIAS_VALIDAS = ['hombre', 'mujer'];
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->conn = Conexion::getConexion(); // Singleton
     }
 
@@ -15,7 +17,8 @@ class Admin {
        ============================ */
 
     //---------------------------------------------------------------------------------- OBTENER USUARIOS
-    public function obtenerUsuarios() {
+    public function obtenerUsuarios()
+    {
 
         $sql = "SELECT * FROM usuarios";
         $stmt = $this->conn->prepare($sql);
@@ -41,7 +44,8 @@ class Admin {
     }
 
     //------------------------------------------------------------------------------------------ INSERTAR USUARIO
-    public function insertarUsuario(array $data) {
+    public function insertarUsuario(array $data)
+    {
         // --- Campos obligatorios ---
         $nombre   = trim($data['nombre'] ?? '');
         $mail     = trim($data['mail'] ?? '');
@@ -83,7 +87,8 @@ class Admin {
     }
 
     //--------------------------------------------------------------------------------------------- ACTUALIZAR USUARIO
-    public function actualizarUsuario($id_usuario, array $data){
+    public function actualizarUsuario($id_usuario, array $data)
+    {
         if (empty($id_usuario)) {
             throw new Exception("El ID del usuario es obligatorio.");
         }
@@ -169,7 +174,8 @@ class Admin {
 
 
     //---------------------------------------------------------------------------------------------------- ELIMINAR USUARIO
-    public function eliminarUsuario($id_usuario) {
+    public function eliminarUsuario($id_usuario)
+    {
 
         $sql = "DELETE FROM usuarios WHERE id_usuario = ?";
         $stmt = $this->conn->prepare($sql);
@@ -196,8 +202,9 @@ class Admin {
        ======================================= */
 
     //----------------------------------------------------------------------------------------- OBTENER PRODUCTOS
-    public function listarProductos() {
-    $sql = "SELECT 
+    public function listarProductos()
+    {
+        $sql = "SELECT 
                 p.id_producto,
                 pt.id_productostalla,  
                 p.nombre_producto,
@@ -212,33 +219,75 @@ class Admin {
             INNER JOIN tallas t ON pt.id_talla = t.id_talla
             ORDER BY p.id_producto DESC";
 
-    $stmt = $this->conn->prepare($sql);
+        $stmt = $this->conn->prepare($sql);
 
-    if (!$stmt) {
-        throw new Exception("Error al preparar consulta: " . $this->conn->error);
+        if (!$stmt) {
+            throw new Exception("Error al preparar consulta: " . $this->conn->error);
+        }
+
+        if (!$stmt->execute()) {
+            throw new Exception("Error al ejecutar consulta: " . $stmt->error);
+        }
+
+        $result = $stmt->get_result();
+        if (!$result) {
+            throw new Exception("Error al obtener resultados: " . $stmt->error);
+        }
+
+        $productos = [];
+        while ($row = $result->fetch_assoc()) {
+            $productos[] = $row;
+        }
+
+        $stmt->close();
+        return $productos;
     }
 
-    if (!$stmt->execute()) {
-        throw new Exception("Error al ejecutar consulta: " . $stmt->error);
+
+    public function subirImagenProducto(array $archivo): string
+    {
+        if (!isset($archivo['tmp_name']) || !is_uploaded_file($archivo['tmp_name'])) {
+            throw new Exception("No se recibió ninguna imagen válida.");
+        }
+
+        $permitidas = ['jpg', 'jpeg', 'png', 'webp'];
+        $extension = strtolower(pathinfo($archivo['name'], PATHINFO_EXTENSION));
+
+        if (!in_array($extension, $permitidas, true)) {
+            throw new Exception("Formato de imagen no permitido.");
+        }
+
+        $raizProyecto = rtrim(dirname(__DIR__), DIRECTORY_SEPARATOR);
+        $carpetaLocal = $raizProyecto . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'productos' . DIRECTORY_SEPARATOR;
+
+        if (!is_dir($carpetaLocal) && !mkdir($carpetaLocal, 0777, true) && !is_dir($carpetaLocal)) {
+            throw new Exception("No se pudo crear la carpeta local de imágenes.");
+        }
+
+        $nombreArchivo = md5(uniqid((string) microtime(true), true)) . '.' . $extension;
+        $destino = $carpetaLocal . $nombreArchivo;
+
+        if (!move_uploaded_file($archivo['tmp_name'], $destino)) {
+            throw new Exception("No se pudo guardar la imagen en el servidor.");
+        }
+
+        $documentRoot = str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT'] ?? $raizProyecto);
+        $rutaProyecto = str_replace('\\', '/', $raizProyecto);
+        $rutaRelativa = str_replace($documentRoot, '', $rutaProyecto);
+        $rutaRelativa = trim($rutaRelativa, '/');
+
+        if ($rutaRelativa !== '' && strpos($rutaRelativa, 'htdocs') === false && strpos($rutaRelativa, 'public_html') === false) {
+            $rutaBase = '/' . $rutaRelativa;
+        } else {
+            $rutaBase = '';
+        }
+
+        return $rutaBase . '/uploads/productos/' . $nombreArchivo;
     }
-
-    $result = $stmt->get_result();
-    if (!$result) {
-        throw new Exception("Error al obtener resultados: " . $stmt->error);
-    }
-
-    $productos = [];
-    while ($row = $result->fetch_assoc()) {
-        $productos[] = $row;
-    }
-
-    $stmt->close();
-    return $productos;
-}
-
 
     //---------------------------------------------------------------------------- INSERTAR PRODUCTOS
-    public function insertarProducto(array $data) {
+    public function insertarProducto(array $data)
+    {
         // --- Campos obligatorios ---
         $nombre      = trim($data['nombre_producto'] ?? '');
         $descripcion = trim($data['descripcion'] ?? '');
@@ -459,63 +508,65 @@ class Admin {
 
 
     //----------------------------------------------------------------------------- INSERTAR TALLA PARA UN PRODUCTO
-    public function insertarProductoTalla($id_producto, array $tallas) {
-    if (!$id_producto || !is_numeric($id_producto)) {
-        throw new Exception("ID de producto no válido.");
-    }
-
-    if (!is_array($tallas) || empty($tallas)) {
-        throw new Exception("No se recibieron tallas para insertar.");
-    }
-
-    $this->conn->begin_transaction();
-
-    foreach ($tallas as $t) {
-        if (!isset($t['id_talla'], $t['stock'])) {
-            $this->conn->rollback();
-            throw new Exception("Datos de talla incompletos.");
+    public function insertarProductoTalla($id_producto, array $tallas)
+    {
+        if (!$id_producto || !is_numeric($id_producto)) {
+            throw new Exception("ID de producto no válido.");
         }
 
-        $id_talla = (int)$t['id_talla'];
-        $stock = (int)$t['stock'];
-
-        if ($id_talla <= 0) {
-            $this->conn->rollback();
-            throw new Exception("ID de talla no válido.");
+        if (!is_array($tallas) || empty($tallas)) {
+            throw new Exception("No se recibieron tallas para insertar.");
         }
 
-        if ($stock < 0) {
-            $this->conn->rollback();
-            throw new Exception("Stock no puede ser negativo.");
-        }
+        $this->conn->begin_transaction();
 
-        $stmt = $this->conn->prepare(
-            "INSERT INTO productos_talla (id_producto, id_talla, stock) VALUES (?, ?, ?)"
-        );
+        foreach ($tallas as $t) {
+            if (!isset($t['id_talla'], $t['stock'])) {
+                $this->conn->rollback();
+                throw new Exception("Datos de talla incompletos.");
+            }
 
-        if (!$stmt) {
-            $this->conn->rollback();
-            throw new Exception("Error al preparar inserción de talla: " . $this->conn->error);
-        }
+            $id_talla = (int)$t['id_talla'];
+            $stock = (int)$t['stock'];
 
-        $stmt->bind_param("iii", $id_producto, $id_talla, $stock);
+            if ($id_talla <= 0) {
+                $this->conn->rollback();
+                throw new Exception("ID de talla no válido.");
+            }
 
-        if (!$stmt->execute()) {
+            if ($stock < 0) {
+                $this->conn->rollback();
+                throw new Exception("Stock no puede ser negativo.");
+            }
+
+            $stmt = $this->conn->prepare(
+                "INSERT INTO productos_talla (id_producto, id_talla, stock) VALUES (?, ?, ?)"
+            );
+
+            if (!$stmt) {
+                $this->conn->rollback();
+                throw new Exception("Error al preparar inserción de talla: " . $this->conn->error);
+            }
+
+            $stmt->bind_param("iii", $id_producto, $id_talla, $stock);
+
+            if (!$stmt->execute()) {
+                $stmt->close();
+                $this->conn->rollback();
+                throw new Exception("Error al insertar talla: " . $stmt->error);
+            }
+
             $stmt->close();
-            $this->conn->rollback();
-            throw new Exception("Error al insertar talla: " . $stmt->error);
         }
-
-        $stmt->close();
+        $this->conn->commit();
+        return true;
     }
-    $this->conn->commit();
-    return true;
-}
 
 
     //----------------------------------------------------------------------------------------- ELIMINAR PRODUCTO
-    public function eliminarProductoPorTalla($id_productostalla) {
-        
+    public function eliminarProductoPorTalla($id_productostalla)
+    {
+
         if (!$id_productostalla || !is_numeric($id_productostalla)) {
             throw new Exception("ID de producto-talla no válido.");
         }
@@ -589,4 +640,3 @@ class Admin {
         return true;
     }
 }
-?>

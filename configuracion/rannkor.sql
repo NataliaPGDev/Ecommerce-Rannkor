@@ -152,7 +152,7 @@ CREATE TABLE `productos` (
   `descripcion` text NOT NULL,
   `categoria` enum('mujer','hombre') NOT NULL,
   `precio` decimal(10,2) NOT NULL,
-  `imagen_url` varchar(50) NOT NULL
+  `imagen_url` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
