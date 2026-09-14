@@ -34,7 +34,7 @@
         </div>
 
         <div class="footer__copyright">
-            <p>2025 Rannkör. Todos los derechos reservados</p>
+            <p>&copy; NGDesarrolloWeb. Todos los derechos reservados</p>
         </div>
     </div>
 </footer>
