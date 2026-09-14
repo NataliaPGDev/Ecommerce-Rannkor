@@ -57,11 +57,14 @@ class AuthControlador
         if ($usuario && password_verify($password, $passwordHash)) {
             unset($_SESSION['errores_login']);
 
+            $rolUsuario = (int)($usuario['id_rol'] ?? 0);
+
             $_SESSION['usuario'] = [ #aqui estan los datos de sesion guardados
                 'id'     => $usuario['id_usuario'],
                 'nombre' => $usuario['nombre'],
                 'mail'   => $usuario['mail'],
-                'rol'    => (int)$usuario['id_rol']
+                'rol'    => $rolUsuario,
+                'id_rol' => $rolUsuario,
             ];
 
             $_SESSION['ultimo_acceso'] = time();
@@ -82,8 +85,24 @@ class AuthControlador
     //------------------------------------------------------------------------------------ FUNCION LOGOUT
     public function logout()
     {
+        $_SESSION = [];
+
+        if (ini_get('session.use_cookies')) {
+            $params = session_get_cookie_params();
+            setcookie(
+                session_name(),
+                '',
+                time() - 42000,
+                $params['path'],
+                $params['domain'],
+                $params['secure'],
+                $params['httponly']
+            );
+        }
+
         session_unset();
         session_destroy();
+
         header("Location: index.php?controller=home&action=index");
         exit();
     }

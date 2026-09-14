@@ -44,7 +44,7 @@
     <div class="carousel">
         <?php foreach ($novedadesMujer as $producto): ?>
             <article class="item">
-                <img src="<?php echo $producto['imagen_url']; ?>" alt="<?php echo htmlspecialchars($producto['nombre_producto']); ?>">
+                <img src="<?php echo urlImagenProducto($producto['imagen_url'] ?? ''); ?>" alt="<?php echo htmlspecialchars($producto['nombre_producto']); ?>">
                 <div class="item__body">
                     <p class="item__name"><?php echo $producto['nombre_producto']; ?></p>
                     <p class="item__desc"><?php echo $producto['descripcion']; ?></p>
@@ -75,7 +75,7 @@
     <div class="carousel">
         <?php foreach ($novedadesHombre as $producto): ?>
             <article class="item">
-                <img src="<?php echo $producto['imagen_url']; ?>" alt="<?php echo htmlspecialchars($producto['nombre_producto']); ?>">
+                <img src="<?php echo urlImagenProducto($producto['imagen_url'] ?? ''); ?>" alt="<?php echo htmlspecialchars($producto['nombre_producto']); ?>">
                 <div class="item__body">
                     <p class="item__name"><?php echo $producto['nombre_producto']; ?></p>
                     <p class="item__desc"><?php echo $producto['descripcion']; ?></p>

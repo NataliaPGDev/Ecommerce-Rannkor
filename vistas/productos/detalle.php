@@ -7,7 +7,7 @@
     <!---- Columna 1: Imagen del producto ---->
 
     <div class="detalleproducto__imagen">
-      <img src="<?php echo $producto['imagen_url']; ?>" alt="Zapatilla">
+      <img src="<?php echo urlImagenProducto($producto['imagen_url'] ?? ''); ?>" alt="Zapatilla">
     </div>
 
 

@@ -1,7 +1,19 @@
 <?php
-final class Middleware {
+final class Middleware
+{
 
     private const TIEMPO_LIMITE = 1800; // 30 minutos
+
+    private static function esAdmin(): bool
+    {
+        $usuario = $_SESSION['usuario'] ?? null;
+        if (!is_array($usuario)) {
+            return false;
+        }
+
+        $rol = $usuario['rol'] ?? $usuario['id_rol'] ?? null;
+        return $rol !== null && (int)$rol === 1;
+    }
 
     /**
      * --------------------------------------------------------------------------------  Verifica sesión para páginas vistas del router principal
@@ -59,7 +71,7 @@ final class Middleware {
      */
     public static function verificarAdminWeb(): void
     {
-        if (!isset($_SESSION['usuario']) || $_SESSION['usuario']['rol'] != 1) {
+        if (!isset($_SESSION['usuario']) || !self::esAdmin()) {
             $_SESSION['error'] = "Acceso denegado";
             header("Location: index.php?controller=auth&action=login");
             exit();
@@ -71,24 +83,22 @@ final class Middleware {
      */
     public static function verificarAdminAPI(): void
     {
-
         if (!isset($_SESSION['usuario'])) {
             http_response_code(403);
-            echo json_encode(['success' => false, 'error' => 'No hay sesión activa']);
+            echo json_encode([
+                'success' => false,
+                'error' => 'No hay sesión activa'
+            ]);
             exit;
         }
 
-        if (!isset($_SESSION['usuario']['rol'])) {
+        if (!self::esAdmin()) {
             http_response_code(403);
-            echo json_encode(['success' => false, 'error' => 'Rol no definido en la sesión']);
-            exit;
-        }
-
-        if ((int)$_SESSION['usuario']['rol'] !== 1) {
-            http_response_code(403);
-            echo json_encode(['success' => false, 'error' => 'Acceso denegado']);
+            echo json_encode([
+                'success' => false,
+                'error' => 'Acceso denegado'
+            ]);
             exit;
         }
     }
 }
-?>

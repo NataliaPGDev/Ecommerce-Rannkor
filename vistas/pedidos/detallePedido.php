@@ -13,9 +13,9 @@
             <?php foreach ($detalles as $item) : ?>
                 <tr>
                     <td class="producto-info">
-                        <img src="<?= htmlspecialchars($item['imagen_url'] ?? 'img/default.png') ?>" 
-                             alt="<?= htmlspecialchars($item['nombre_producto']) ?>" 
-                             class="miniatura">
+                        <img src="<?= urlImagenProducto($item['imagen_url'] ?? '') ?>"
+                            alt="<?= htmlspecialchars($item['nombre_producto']) ?>"
+                            class="miniatura">
                         <span><?= htmlspecialchars($item['nombre_producto']) ?></span>
                     </td>
                     <td><?= htmlspecialchars($item['talla']) ?></td>

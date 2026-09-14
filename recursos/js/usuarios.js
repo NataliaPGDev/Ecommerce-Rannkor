@@ -13,6 +13,8 @@ function initModales() {
   const modalCrear = document.getElementById("modalCrearUsuario");
   const modalEditar = document.getElementById("modalEditarUsuario");
 
+  initPasswordToggles();
+
   // Botón nuevo usuario
   const btnNuevo = document.getElementById("btnNuevoUsuario");
   if (btnNuevo) btnNuevo.addEventListener("click", abrirModalCrearUsuario);
@@ -29,6 +31,28 @@ function initModales() {
       cerrarModalCrearUsuario();
       cerrarModalEditarUsuario();
     }
+  });
+}
+
+function initPasswordToggles() {
+  document.querySelectorAll(".btn-password-toggle").forEach((button) => {
+    const icon = button.querySelector("ion-icon");
+    if (!icon) return;
+
+    button.addEventListener("click", () => {
+      const targetId = button.dataset.target;
+      const input = document.getElementById(targetId);
+
+      if (!input) return;
+
+      const isPassword = input.type === "password";
+      input.type = isPassword ? "text" : "password";
+      icon.setAttribute("name", isPassword ? "eye-off-outline" : "eye-outline");
+      button.setAttribute(
+        "aria-label",
+        isPassword ? "Ocultar contraseña" : "Mostrar contraseña",
+      );
+    });
   });
 }
 
@@ -86,7 +110,7 @@ function cargarUsuarios() {
                     <td>${usuario.apellidos ?? ""}</td>
                     <td>${usuario.telefono ?? ""}</td>
                     <td>${usuario.mail}</td>
-                    <td>${usuario.password}</td>
+                    <td>••••••</td>
                     <td>${usuario.id_rol}</td>
                     <td class="acciones">
                         <button class="btn-icono btn-editar" data-id="${usuario.id_usuario}"><ion-icon name="create-outline"></ion-icon></button>
@@ -161,7 +185,7 @@ function editarUsuario(id) {
   document.getElementById("edit_apellidos").value = usuario.apellidos;
   document.getElementById("edit_telefono").value = usuario.telefono;
   document.getElementById("edit_mail").value = usuario.mail;
-  document.getElementById("edit_password").value = usuario.password;
+  document.getElementById("edit_password").value = "";
   document.getElementById("edit_id_rol").value = usuario.id_rol;
 
   abrirModalEditarUsuario();

@@ -97,6 +97,10 @@ function cargarProductos() {
 
       productosData.forEach((prod) => {
         const tr = document.createElement("tr");
+        const imagenUrl = prod.imagen_url
+          ? `${window.location.origin}${window.APP_BASE || ""}/uploads/productos/${prod.imagen_url}`
+          : "";
+
         tr.innerHTML = `
         <td>${prod.id_producto}</td>
         <td>${prod.nombre_producto}</td>
@@ -105,7 +109,7 @@ function cargarProductos() {
         <td>${parseFloat(prod.precio).toFixed(2)}</td>
         <td>${prod.talla}</td>
         <td>${prod.stock}</td>
-        <td><img src="${prod.imagen_url}" alt="${prod.nombre_producto}" width="50"></td>
+        <td><img src="${imagenUrl}" alt="${prod.nombre_producto}" width="50"></td>
         <td class="acciones">
             <button class="btn-icono btn-editar" data-id_producto="${prod.id_producto}" data-id_productostalla="${prod.id_productostalla}">
                 <ion-icon name="create-outline"></ion-icon>

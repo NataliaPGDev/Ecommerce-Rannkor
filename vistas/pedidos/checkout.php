@@ -104,7 +104,7 @@
 
             <?php foreach ($lineasCheckout as $line): ?>
                 <div class="producto-resumen">
-                    <img src="<?= $line['imagen'] ?>" alt="">
+                    <img src="<?= urlImagenProducto($line['imagen'] ?? '') ?>" alt="">
                     <div>
                         <strong><?= $line['nombre'] ?></strong>
                         <p>Cantidad: <?= $line['cantidad'] ?></p>

@@ -53,7 +53,7 @@
                     <?php foreach ($detalles as $item): ?>
                         <tr>
                             <td>
-                                <img src="<?= htmlspecialchars($item['imagen_url']) ?>" alt="<?= htmlspecialchars($item['nombre_producto']) ?>" class="pedido__img">
+                                <img src="<?= urlImagenProducto($item['imagen_url'] ?? '') ?>" alt="<?= htmlspecialchars($item['nombre_producto']) ?>" class="pedido__img">
                             </td>
                             <td><?= htmlspecialchars($item['nombre_producto']) ?></td>
                             <td><?= htmlspecialchars($item['talla']) ?></td>

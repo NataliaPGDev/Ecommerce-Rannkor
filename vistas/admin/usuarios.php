@@ -35,28 +35,45 @@
     <div class="modal-contenido">
         <h2>Crear nuevo usuario</h2>
         <div class="modal-input">
-            <label for="nombre">Nombre</label>
-            <input type="text" id="nombre">
+            <div class="modal-campo">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre">
+            </div>
 
-            <label for="apellidos">Apellidos</label>
-            <input type="text" id="apellidos">
+            <div class="modal-campo">
+                <label for="apellidos">Apellidos</label>
+                <input type="text" id="apellidos">
+            </div>
 
-            <label for="telefono">Teléfono</label>
-            <input type="text" id="telefono">
+            <div class="modal-campo">
+                <label for="telefono">Teléfono</label>
+                <input type="text" id="telefono">
+            </div>
 
-            <label for="mail">Email</label>
-            <input type="email" id="mail">
+            <div class="modal-campo">
+                <label for="mail">Email</label>
+                <input type="email" id="mail">
+            </div>
 
-            <label for="password">Password</label>
-            <input type="password" id="password">
+            <div class="modal-campo modal-campo--password">
+                <label for="password">Contraseña</label>
+                <div class="password-input">
+                    <input type="password" id="password" autocomplete="new-password" placeholder="Escribe la contraseña">
+                    <button type="button" class="btn-password-toggle" data-target="password" aria-label="Mostrar contraseña">
+                        <ion-icon name="eye-outline"></ion-icon>
+                    </button>
+                </div>
+            </div>
 
-            <label for="id_rol">Rol</label>
-            <input type="number" id="id_rol">
+            <div class="modal-campo">
+                <label for="id_rol">Rol</label>
+                <input type="number" id="id_rol" min="1">
+            </div>
         </div>
 
         <div class="modal-acciones">
-            <button onclick="crearUsuario()">Guardar</button>
-            <button onclick="cerrarModalCrearUsuario()">Cancelar</button>
+            <button class="btn-modal btn-modal--secondary" onclick="cerrarModalCrearUsuario()">Cancelar</button>
+            <button class="btn-modal btn-modal--primary" onclick="crearUsuario()">Guardar</button>
         </div>
     </div>
 </div>
@@ -69,27 +86,44 @@
         <div class="modal-input">
             <input type="hidden" id="edit_id_usuario">
 
-            <label>Nombre</label>
-            <input type="text" id="edit_nombre">
+            <div class="modal-campo">
+                <label for="edit_nombre">Nombre</label>
+                <input type="text" id="edit_nombre">
+            </div>
 
-            <label>Apellidos</label>
-            <input type="text" id="edit_apellidos">
+            <div class="modal-campo">
+                <label for="edit_apellidos">Apellidos</label>
+                <input type="text" id="edit_apellidos">
+            </div>
 
-            <label>Teléfono</label>
-            <input type="text" id="edit_telefono">
+            <div class="modal-campo">
+                <label for="edit_telefono">Teléfono</label>
+                <input type="text" id="edit_telefono">
+            </div>
 
-            <label>Email</label>
-            <input type="email" id="edit_mail">
+            <div class="modal-campo">
+                <label for="edit_mail">Email</label>
+                <input type="email" id="edit_mail">
+            </div>
 
-            <label>Email</label>
-            <input type="email" id="edit_password">
+            <div class="modal-campo modal-campo--password">
+                <label for="edit_password">Contraseña</label>
+                <div class="password-input">
+                    <input type="password" id="edit_password" autocomplete="new-password" placeholder="Deja en blanco para mantener la actual">
+                    <button type="button" class="btn-password-toggle" data-target="edit_password" aria-label="Mostrar contraseña">
+                        <ion-icon name="eye-outline"></ion-icon>
+                    </button>
+                </div>
+            </div>
 
-            <label>Rol</label>
-            <input type="number" id="edit_id_rol">
+            <div class="modal-campo">
+                <label for="edit_id_rol">Rol</label>
+                <input type="number" id="edit_id_rol" min="1">
+            </div>
         </div>
         <div class="modal-acciones">
-            <button onclick="guardarCambiosUsuario()">Guardar cambios</button>
-            <button onclick="cerrarModalEditarUsuario()">Cancelar</button>
+            <button class="btn-modal btn-modal--secondary" onclick="cerrarModalEditarUsuario()">Cancelar</button>
+            <button class="btn-modal btn-modal--primary" onclick="guardarCambiosUsuario()">Guardar cambios</button>
         </div>
     </div>
 </div>

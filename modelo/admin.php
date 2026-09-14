@@ -271,18 +271,7 @@ class Admin
             throw new Exception("No se pudo guardar la imagen en el servidor.");
         }
 
-        $documentRoot = str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT'] ?? $raizProyecto);
-        $rutaProyecto = str_replace('\\', '/', $raizProyecto);
-        $rutaRelativa = str_replace($documentRoot, '', $rutaProyecto);
-        $rutaRelativa = trim($rutaRelativa, '/');
-
-        if ($rutaRelativa !== '' && strpos($rutaRelativa, 'htdocs') === false && strpos($rutaRelativa, 'public_html') === false) {
-            $rutaBase = '/' . $rutaRelativa;
-        } else {
-            $rutaBase = '';
-        }
-
-        return $rutaBase . '/uploads/productos/' . $nombreArchivo;
+        return $nombreArchivo;
     }
 
     //---------------------------------------------------------------------------- INSERTAR PRODUCTOS

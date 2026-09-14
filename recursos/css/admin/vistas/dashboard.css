@@ -28,6 +28,7 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.1rem;
+    text-align: center;
 }
 
 /* ====== BOTONES DEL SIDEBAR ====== */
@@ -229,6 +230,10 @@
     gap: 0.7rem;
 }
 
+.modal-campo--password {
+    grid-column: 1 / -1;
+}
+
 .modal-campo--full {
     grid-column: 1 / -1;
 }
@@ -237,6 +242,45 @@
     font-size: 0.9rem;
     font-weight: 600;
     color: #3d4756;
+}
+
+.password-input {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-input input {
+    flex: 1;
+    padding-right: 3.2rem;
+}
+
+.btn-password-toggle {
+    position: absolute;
+    right: 0.6rem;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
+    color: #4b5563;
+    width: 2.2rem;
+    height: 2.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.6rem;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.btn-password-toggle:hover {
+    background: rgba(74, 144, 226, 0.08);
+    color: #1f2937;
+}
+
+.btn-password-toggle ion-icon {
+    pointer-events: none;
 }
 
 .modal-input input,
