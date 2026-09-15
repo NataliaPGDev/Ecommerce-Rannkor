@@ -6,6 +6,10 @@
   <img src="https://img.shields.io/badge/Status-Project%20Demo-28a745?style=for-the-badge" alt="Status" />
 </p>
 
+## Demo
+
+https://rannkor.infinityfreeapp.com/
+
 ## Descripción
 
 Tienda online de calzado desarrollada en PHP con una estructura MVC sencilla. Permite a los usuarios explorar productos, filtrar por categoría, ver detalles, gestionar un carrito de compra, completar el checkout y consultar el historial de pedidos.
