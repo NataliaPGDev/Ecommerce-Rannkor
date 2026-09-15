@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 13-09-2026 a las 12:45:32
+-- Tiempo de generación: 15-09-2026 a las 13:40:59
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -41,8 +41,9 @@ CREATE TABLE `carrito` (
 INSERT INTO `carrito` (`id_carrito`, `fecha_creacion`, `estado`, `id_usuario`) VALUES
 (4, '2025-12-07 21:27:31', 'finalizado', 4),
 (5, '2025-12-07 21:51:38', 'finalizado', 4),
-(6, '2025-12-09 09:39:53', 'activo', 4),
-(9, '2026-09-13 10:13:20', 'activo', 15);
+(6, '2025-12-09 09:39:53', 'finalizado', 4),
+(10, '2026-09-13 15:06:49', 'finalizado', 4),
+(11, '2026-09-15 11:08:00', 'activo', 4);
 
 -- --------------------------------------------------------
 
@@ -57,13 +58,6 @@ CREATE TABLE `carrito_detalle` (
   `cantidad` int(11) NOT NULL,
   `precio_unitario` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Volcado de datos para la tabla `carrito_detalle`
---
-
-INSERT INTO `carrito_detalle` (`id_carritodetalle`, `id_carrito`, `id_productostalla`, `cantidad`, `precio_unitario`) VALUES
-(22, 6, 10, 1, 50.00);
 
 -- --------------------------------------------------------
 
@@ -89,7 +83,8 @@ CREATE TABLE `direccion` (
 --
 
 INSERT INTO `direccion` (`id_direccion`, `calle`, `numero`, `bloque`, `planta`, `puerta`, `ciudad`, `codigo_postal`, `provincia`, `id_usuario`) VALUES
-(7, 'Goya', 20, '0', '1', 'B', 'Fuente Palmera', 14700, 'Córdoba', 4);
+(7, 'Goya', 20, '0', '1', 'B', 'Fuente Palmera', 14700, 'Córdoba', 4),
+(11, 'Las Flores', 2, '', '2', 'A', 'Fuente Palmera', 14500, 'Córdoba', 4);
 
 -- --------------------------------------------------------
 
@@ -115,7 +110,9 @@ CREATE TABLE `pedidos` (
 --
 
 INSERT INTO `pedidos` (`id_pedido`, `id_usuario`, `id_direccion`, `metodo_pago`, `fecha_pedido`, `estado_pedido`, `tipo_envio`, `gastos_envio`, `total`, `codigo`) VALUES
-(4, 4, 7, 'visa', '2025-12-07 21:29:05', 'pagado', 'urgente', 10.00, 110.00, 'PED-6935F1A1EDF93');
+(4, 4, 7, 'visa', '2025-12-07 21:29:05', 'pagado', 'urgente', 10.00, 110.00, 'PED-6935F1A1EDF93'),
+(8, 4, 11, 'visa', '2026-09-13 14:46:54', 'pagado', 'estandar', 5.00, 55.00, 'PED-6AA6B75E055BB'),
+(9, 4, 11, 'paypal', '2026-09-15 11:04:12', 'pagado', 'urgente', 10.00, 60.00, 'PED-6AA9262C184DA');
 
 -- --------------------------------------------------------
 
@@ -138,7 +135,9 @@ CREATE TABLE `pedidos_detalle` (
 
 INSERT INTO `pedidos_detalle` (`id_pedidodetalle`, `id_pedido`, `id_producto`, `talla`, `cantidad`, `precio_unitario`) VALUES
 (6, 4, 2, 36, 1, 50.00),
-(7, 4, 16, 44, 1, 50.00);
+(7, 4, 16, 44, 1, 50.00),
+(13, 8, 1, 37, 1, 50.00),
+(14, 9, 4, 39, 1, 50.00);
 
 -- --------------------------------------------------------
 
@@ -152,7 +151,7 @@ CREATE TABLE `productos` (
   `descripcion` text NOT NULL,
   `categoria` enum('mujer','hombre') NOT NULL,
   `precio` decimal(10,2) NOT NULL,
-  `imagen_url` varchar(255) NOT NULL
+  `imagen_url` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -160,30 +159,30 @@ CREATE TABLE `productos` (
 --
 
 INSERT INTO `productos` (`id_producto`, `nombre_producto`, `descripcion`, `categoria`, `precio`, `imagen_url`) VALUES
-(1, 'Lux', 'Optima tibi exopto', 'mujer', 50.00, 'recursos/img/imgwom/1mm.webp'),
-(2, 'Lux', 'Optima tibi exopto', 'mujer', 50.00, 'recursos/img/imgwom/2mm.webp'),
-(3, 'Lux', 'Optima tibi exopto', 'mujer', 50.00, 'recursos/img/imgwom/3mm.webp'),
-(4, 'Lux', 'Optima tibi exopto', 'mujer', 50.00, 'recursos/img/imgwom/4mm.webp'),
-(5, 'Lux', 'Optima tibi exopto', 'mujer', 50.00, 'recursos/img/imgwom/5mm.webp'),
-(6, 'Lux', 'Optima tibi exopto', 'mujer', 50.00, 'recursos/img/imgwom/6mm.webp'),
-(7, 'Lux', 'Optima tibi exopto', 'mujer', 50.00, 'recursos/img/imgwom/7mm.webp'),
-(8, 'Lux', 'Optima tibi exopto', 'mujer', 50.00, 'recursos/img/imgwom/8mm.webp'),
-(9, 'Lux', 'Optima tibi exopto', 'mujer', 50.00, 'recursos/img/imgwom/9mm.webp'),
-(10, 'Lux', 'Optima tibi exopto', 'mujer', 50.00, 'recursos/img/imgwom/10mm.webp'),
-(11, 'Lux', 'Optima tibi exopto', 'mujer', 50.00, 'recursos/img/imgwom/11mm.webp'),
-(12, 'Lux', 'Optima tibi exopto', 'mujer', 50.00, 'recursos/img/imgwom/12mm.webp'),
-(13, 'Lux', 'Optima tibi exopto', 'hombre', 50.00, 'recursos/img/imgmen/1hh.webp'),
-(14, 'Lux', 'Optima tibi exopto', 'hombre', 50.00, 'recursos/img/imgmen/2hh.webp'),
-(15, 'Lux', 'Optima tibi exopto', 'hombre', 50.00, 'recursos/img/imgmen/3hh.webp'),
-(16, 'Lux', 'Optima tibi exopto', 'hombre', 50.00, 'recursos/img/imgmen/4hh.webp'),
-(17, 'Lux', 'Optima tibi exopto', 'hombre', 50.00, 'recursos/img/imgmen/5hh.webp'),
-(18, 'Lux', 'Optima tibi exopto', 'hombre', 50.00, 'recursos/img/imgmen/6hh.webp'),
-(19, 'Lux', 'Optima tibi exopto', 'hombre', 50.00, 'recursos/img/imgmen/7hh.webp'),
-(20, 'Lux', 'Optima tibi exopto', 'hombre', 50.00, 'recursos/img/imgmen/8hh.webp'),
-(21, 'Lux', 'Optima tibi exopto', 'hombre', 50.00, 'recursos/img/imgmen/9hh.webp'),
-(22, 'Lux', 'Optima tibi exopto', 'hombre', 50.00, 'recursos/img/imgmen/10hh.webp'),
-(23, 'Lux', 'Optima tibi exopto', 'hombre', 50.00, 'recursos/img/imgmen/11hh.webp'),
-(24, 'Lux', 'Optima tibi exopto', 'hombre', 50.00, 'recursos/img/imgmen/12hh.webp');
+(1, 'Lux', 'Optima tibi exopto', 'mujer', 50.00, '1mm.webp'),
+(2, 'Lux', 'Optima tibi exopto', 'mujer', 50.00, '2mm.webp'),
+(3, 'Lux', 'Optima tibi exopto', 'mujer', 50.00, '3mm.webp'),
+(4, 'Lux', 'Optima tibi exopto', 'mujer', 50.00, '4mm.webp'),
+(5, 'Lux', 'Optima tibi exopto', 'mujer', 50.00, '5mm.webp'),
+(6, 'Lux', 'Optima tibi exopto', 'mujer', 50.00, '6mm.webp'),
+(7, 'Lux', 'Optima tibi exopto', 'mujer', 50.00, '7mm.webp'),
+(8, 'Lux', 'Optima tibi exopto', 'mujer', 50.00, '8mm.webp'),
+(9, 'Lux', 'Optima tibi exopto', 'mujer', 50.00, '9mm.webp'),
+(10, 'Lux', 'Optima tibi exopto', 'mujer', 50.00, '10mm.webp'),
+(11, 'Lux', 'Optima tibi exopto', 'mujer', 50.00, '11mm.webp'),
+(12, 'Lux', 'Optima tibi exopto', 'mujer', 50.00, '12mm.webp'),
+(13, 'Lux', 'Optima tibi exopto', 'hombre', 50.00, '1hh.webp'),
+(14, 'Lux', 'Optima tibi exopto', 'hombre', 50.00, '2hh.webp'),
+(15, 'Lux', 'Optima tibi exopto', 'hombre', 50.00, '3hh.webp'),
+(16, 'Lux', 'Optima tibi exopto', 'hombre', 50.00, '4hh.webp'),
+(17, 'Lux', 'Optima tibi exopto', 'hombre', 50.00, '5hh.webp'),
+(18, 'Lux', 'Optima tibi exopto', 'hombre', 50.00, '6hh.webp'),
+(19, 'Lux', 'Optima tibi exopto', 'hombre', 50.00, '7hh.webp'),
+(20, 'Lux', 'Optima tibi exopto', 'hombre', 50.00, '8hh.webp'),
+(21, 'Lux', 'Optima tibi exopto', 'hombre', 50.00, '9hh.webp'),
+(22, 'Lux', 'Optima tibi exopto', 'hombre', 50.00, '10hh.webp'),
+(23, 'Lux', 'Optima tibi exopto', 'hombre', 50.00, '11hh.webp'),
+(24, 'Lux', 'Optima tibi exopto', 'hombre', 50.00, '12hh.webp');
 
 -- --------------------------------------------------------
 
@@ -204,7 +203,7 @@ CREATE TABLE `productos_talla` (
 
 INSERT INTO `productos_talla` (`id_productostalla`, `id_talla`, `id_producto`, `stock`) VALUES
 (1, 110, 1, 10),
-(2, 111, 1, 10),
+(2, 111, 1, 9),
 (3, 112, 1, 5),
 (4, 113, 1, 7),
 (5, 110, 2, 10),
@@ -217,7 +216,7 @@ INSERT INTO `productos_talla` (`id_productostalla`, `id_talla`, `id_producto`, `
 (12, 113, 3, 5),
 (13, 111, 4, 10),
 (14, 112, 4, 9),
-(15, 113, 4, 5),
+(15, 113, 4, 4),
 (16, 114, 4, 3),
 (17, 111, 5, 10),
 (18, 112, 5, 7),
@@ -379,9 +378,8 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id_usuario`, `nombre`, `apellidos`, `telefono`, `mail`, `password`, `fecha_registro`, `id_rol`) VALUES
-(4, 'Estibaliz', 'Morales Gonzales', '657456789', 'cliente@gmail.com', '$2y$10$ilj0hQazHftKcBrOrHJEmeLR2l07kBacjh9u6lI.4RJzJoN.Z1jXC\r\n', '2025-11-17 10:37:17', 2),
-(9, 'Natalia', NULL, NULL, 'admin@gmail.com', '$2y$10$lmeRhe4KEe6riIOx7RZ9FOdGGhI1O7X7yVJhH1N8wqeK9w.Pe.VFm', '2025-12-09 16:26:52', 1),
-(15, 'Maria', NULL, NULL, 'cliente1@gmail.com', '$2y$10$DBb55CvjCfqMUgWY0tbPlupJ2h0Ipz0pjPDL6STnWULeoR5WfwxS6', '2026-09-13 10:11:16', 2);
+(4, 'Estibaliz', 'Flores', '600600600', 'cliente@gmail.com', '$2y$10$ilj0hQazHftKcBrOrHJEmeLR2l07kBacjh9u6lI.4RJzJoN.Z1jXC\r\n', '2025-11-17 10:37:17', 2),
+(9, 'Natalia', 'PGDev', NULL, 'admin@gmail.com', '$2y$10$r5LMc1v/mGNbYknumupjd.uIYLhvHZw4NQ/EQ0UAtSQ92H.KXQiQ2', '2025-12-09 16:26:52', 1);
 
 --
 -- Índices para tablas volcadas
@@ -467,43 +465,43 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `carrito`
 --
 ALTER TABLE `carrito`
-  MODIFY `id_carrito` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_carrito` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `carrito_detalle`
 --
 ALTER TABLE `carrito_detalle`
-  MODIFY `id_carritodetalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id_carritodetalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT de la tabla `direccion`
 --
 ALTER TABLE `direccion`
-  MODIFY `id_direccion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_direccion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT de la tabla `pedidos`
 --
 ALTER TABLE `pedidos`
-  MODIFY `id_pedido` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_pedido` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `pedidos_detalle`
 --
 ALTER TABLE `pedidos_detalle`
-  MODIFY `id_pedidodetalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_pedidodetalle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT de la tabla `productos_talla`
 --
 ALTER TABLE `productos_talla`
-  MODIFY `id_productostalla` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
+  MODIFY `id_productostalla` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=120;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
