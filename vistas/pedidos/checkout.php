@@ -7,26 +7,26 @@
         <div class="checkout-left">
             <h2>Datos de Envío</h2>
 
-            <form id="form-envio" action="index.php?controller=pedido&action=compra" method="POST">
+            <form id="form-envio" action="index.php?controller=pedido&action=compra" method="POST" autocomplete="on">
 
                 <div class="form-group">
                     <label>Nombre</label>
-                    <input type="text" name="nombre" required>
+                    <input type="text" name="nombre" value="<?= htmlspecialchars($datosUsuario['nombre'] ?? '') ?>" autocomplete="given-name" readonly required>
                 </div>
 
                 <div class="form-group">
                     <label>Apellidos</label>
-                    <input type="text" name="apellidos" required>
+                    <input type="text" name="apellidos" value="<?= htmlspecialchars($datosUsuario['apellidos'] ?? '') ?>" autocomplete="family-name" readonly required>
                 </div>
 
                 <div class="form-group">
                     <label>Calle</label>
-                    <input type="text" name="calle" required>
+                    <input type="text" name="calle" autocomplete="street-address" required>
                 </div>
 
                 <div class="form-group">
                     <label>Número</label>
-                    <input type="text" name="numero" required>
+                    <input type="text" name="numero" autocomplete="address-line2" required>
                 </div>
 
                 <div class="form-row">
@@ -46,28 +46,30 @@
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label>Ciudad</label>
-                    <input type="text" name="ciudad" required>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Provincia</label>
+                        <select name="provincia" autocomplete="address-level1" required>
+                            <?php foreach ($provincias as $p): ?>
+                                <option value="<?= $p ?>"><?= $p ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Ciudad</label>
+                        <input type="text" name="ciudad" autocomplete="address-level2" required>
+                    </div>
                 </div>
 
                 <div class="form-group small-2">
                     <label>Código Postal</label>
-                    <input type="text" name="codigo_postal" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Provincia</label>
-                    <select name="provincia" required>
-                        <?php foreach ($provincias as $p): ?>
-                            <option value="<?= $p ?>"><?= $p ?></option>
-                        <?php endforeach; ?>
-                    </select>
+                    <input type="text" name="codigo_postal" autocomplete="postal-code" required>
                 </div>
 
                 <div class="form-group">
                     <label>Teléfono</label>
-                    <input type="text" name="telefono" required>
+                    <input type="text" name="telefono" value="<?= htmlspecialchars($datosUsuario['telefono'] ?? '') ?>" autocomplete="tel" readonly required>
                 </div>
 
                 <h3>Tipo de Envío</h3>

@@ -52,5 +52,6 @@
 
     <div class="acciones-carrito">
         <a href="index.php?controller=pedido&action=checkout" class="btn-finalizar">Finalizar compra</a>
+        <div class="carrito-toast" role="status" aria-live="polite" aria-atomic="true"></div>
     </div>
 </section>

@@ -91,6 +91,11 @@
     min-width: 0;
 }
 
+.form-row>.form-group {
+    flex: 1;
+    min-width: 0;
+}
+
 /* ==========================
    OPCIONES DE ENVÍO
 ========================== */
@@ -286,5 +291,10 @@
 
     .envio-options {
         grid-template-columns: 1fr;
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 0;
     }
 }

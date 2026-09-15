@@ -60,7 +60,7 @@
 
 <section class="marca">
     <div class="marca__content">
-        <h3>Calzado pensado para moverse con estilo</h3>
+        <h3>Calzado con estilo</h3>
         <p>Comodidad, diseño y detalles premium para cada momento del día.</p>
     </div>
     <img src="../../recursos/img/imgbanner/banner_mujer.webp" alt="Particularidad de la marca">

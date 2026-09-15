@@ -38,6 +38,8 @@ class PedidoControlador
                 exit;
             }
 
+            $datosUsuario = $this->usuarioModel->obtenerDatos($id_usuario);
+
             // Obtener carrito activo
             $carrito = $this->carritoModel->obtenerCarritoActivo($id_usuario);
             $id_carrito = $carrito['id_carrito'] ?? null;
@@ -49,6 +51,11 @@ class PedidoControlador
 
             // Obtener productos del carrito
             $detallesCarro = $this->carritoDetalleModel->obtenerPorCarrito($id_carrito);
+
+            if (empty($detallesCarro)) {
+                header("Location: index.php?controller=carrito&action=ver&error=carrito_vacio");
+                exit;
+            }
 
             // Datos que enviaremos a la vista
             $lineasCheckout = [];
@@ -104,6 +111,12 @@ class PedidoControlador
 
             $id_carrito = $carrito['id_carrito'];
 
+            // Comprobar el carrito antes de guardar datos de la compra.
+            $detalles = $this->carritoDetalleModel->obtenerPorCarrito($id_carrito);
+            if (empty($detalles)) {
+                throw new Exception("El carrito está vacío.");
+            }
+
             $tipo_envio = $params['tipo_envio'] ?? 'estandar';
 
             // Validar método de pago
@@ -134,19 +147,6 @@ class PedidoControlador
             $id_direccion = $this->usuarioModel->guardarDireccion($id_usuario, $direccion);
             if (!$id_direccion) {
                 throw new Exception("Error al guardar la dirección.");
-            }
-
-            // Actualizar datos del usuario (teléfono y apellidos)
-            $datosUsuario = [
-                'apellidos' => $params['apellidos'] ?? null,
-                'telefono'  => $params['telefono'] ?? null
-            ];
-            $this->usuarioModel->actualizarDatos($id_usuario, $datosUsuario);
-
-            // Obtener detalles del carrito
-            $detalles = $this->carritoDetalleModel->obtenerPorCarrito($id_carrito);
-            if (empty($detalles)) {
-                throw new Exception("El carrito está vacío.");
             }
 
             foreach ($detalles as $item) {

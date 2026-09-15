@@ -159,6 +159,7 @@
 ========================== */
 
 .acciones-carrito {
+    position: relative;
     margin-top: 4rem;
     text-align: center;
 }
@@ -182,6 +183,31 @@
     opacity: 0.98;
 }
 
+.carrito-toast {
+    position: absolute;
+    left: 50%;
+    top: calc(100% + 1.2rem);
+    z-index: 10;
+    max-width: calc(100% - 2.4rem);
+    padding: 1.4rem 2rem;
+    border-radius: 0.8rem;
+    background: var(--marron-claro);
+    color: var(--oscuro);
+    font-size: 1.5rem;
+    font-weight: 400;
+    text-align: center;
+    box-shadow: 0 1.2rem 2.4rem rgba(23, 23, 23, 0.24);
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, 1.2rem);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.carrito-toast.is-visible {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
 @media (max-width: 768px) {
     .carrito__contenedor {
         padding: 3rem 1.2rem;
@@ -196,5 +222,11 @@
         display: block;
         overflow-x: auto;
         white-space: nowrap;
+    }
+
+    .carrito-toast {
+        position: fixed;
+        top: auto;
+        bottom: 3rem;
     }
 }

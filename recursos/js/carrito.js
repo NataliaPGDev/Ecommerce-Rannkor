@@ -22,6 +22,18 @@ document.addEventListener("DOMContentLoaded", function () {
       return isNaN(numero) ? "0.00 €" : `${numero.toFixed(2)} €`;
     },
 
+    mostrarToast: function (mensaje) {
+      const toast = document.querySelector(".carrito-toast");
+      if (!toast) return;
+
+      toast.textContent = mensaje;
+      toast.classList.add("is-visible");
+      clearTimeout(this.toastTimeout);
+      this.toastTimeout = setTimeout(() => {
+        toast.classList.remove("is-visible");
+      }, 3000);
+    },
+
     // ============================
     // Actualizar cantidad de un producto
     // ============================
@@ -105,6 +117,21 @@ document.addEventListener("DOMContentLoaded", function () {
           this.eliminarProducto(parseInt(button.dataset.id));
         });
       });
+
+      document
+        .querySelector(".acciones-carrito .btn-finalizar")
+        ?.addEventListener("click", (event) => {
+          const productos = document.querySelectorAll(
+            'tbody tr[id^="detalle-"]',
+          );
+
+          if (productos.length === 0) {
+            event.preventDefault();
+            this.mostrarToast(
+              "Debes agregar al menos un producto para continuar con la compra",
+            );
+          }
+        });
     },
 
     // ============================
