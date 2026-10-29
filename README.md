@@ -26,7 +26,7 @@ Crear una experiencia de compra completa para usuarios que quieran navegar por c
 - Vista detallada del producto
 - Carrito de compra con actualización de cantidades
 - Proceso de checkout
-- Historial de pedidos
+- Historial de pedidos 
 - Perfil del usuario
 - Sistema de autenticación y roles
 - Panel administrativo para gestión de productos y usuarios
@@ -113,7 +113,7 @@ define('DB_PORT', 3306);
 - Gestionar usuarios
 - Crear, editar y borrar productos
 - Gestionar tallas y stock
-- Consultar pedidos
+- Consultar pedidos (sin implementar)
 
 ## Flujo principal
 
